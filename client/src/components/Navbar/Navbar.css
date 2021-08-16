@@ -74,6 +74,20 @@
   color: var(--secondary-gray);
   margin-top: 8px;
 }
+.nav__login {
+  background-color: var(--light-gray-2);
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--primary-blue);
+}
+.nav__login:hover {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  font-weight: 600;
+}
+
 
 /***** DIVIDER *****/
 .nav__divider {
