@@ -1,0 +1,11 @@
+.avatar__background {
+  background: linear-gradient(180deg, #f1874b 0%, #ec5e65 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.avatar__letter {
+  color: var(--white);
+  font-size: 18px;
+}
