@@ -32,9 +32,9 @@
   background-color: var(--light-gray-1);
   cursor: pointer;
 }
-.nav__dropdown__hr{
-    border: 1px solid var(--light-gray-2);
-    margin: 8px 8px;
+.nav__dropdown__hr {
+  border: 1px solid var(--light-gray-2);
+  margin: 8px 8px;
 }
 .nav__dropdown__profile {
   display: flex;
@@ -50,6 +50,29 @@
 .nav__dropdown__profile__text__link {
   color: var(--primary-gray);
   font-size: 12px;
+}
+.nav__dropdown__option {
+  display: grid;
+  grid-template-columns: max-content auto max-content;
+  align-items: center;
+  grid-gap: 10px;
+}
+.nav__dropdown__option__icon {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 7px;
+  background-color: #edf1f4;
+  border-radius: 50%;
+  color: var(--primary-gray);
+}
+.nav__dropdown__option__text {
+  font-size: 14px;
+  color: var(--primary-gray);
+}
+.nav__dropdown__copyright {
+  font-size: 13px;
+  color: var(--secondary-gray);
+  margin-top: 8px;
 }
 
 /***** DIVIDER *****/
