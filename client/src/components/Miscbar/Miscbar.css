@@ -1,0 +1,110 @@
+.misc {
+  border-left: 2px solid var(--light-gray-2);
+  padding: 10px 15px;
+  overflow-y: scroll;
+  background-color: var(--white);
+  z-index: 10;
+}
+.misc::-webkit-scrollbar {
+  width: 8px;
+}
+.misc::-webkit-scrollbar-track {
+  visibility: hidden;
+  border: 2px solid transparent;
+}
+.misc::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  background-color: var(--secondary-gray);
+  border-radius: 4px;
+  border: 2px solid transparent;
+}
+.misc__divider {
+  margin: 20px 0;
+  border: 1px solid #e5e5e7;
+}
+.misc__heading {
+  display: flex;
+}
+.misc__heading__icon {
+  color: var(--secondary-gray);
+}
+.misc__heading__label {
+  margin-left: 4px;
+  font-size: 16px;
+  color: var(--secondary-gray);
+}
+.misc__content__announcement > h4 {
+  font-size: 14px;
+  color: var(--primary-gray);
+}
+
+.misc__content__leaderboard {
+  border: 1px solid var(--light-gray-3);
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px;
+}
+.misc__leaderboard__buttons {
+  display: flex;
+}
+.misc__leaderboard__button {
+  height: 27px;
+  border-radius: 10px;
+  padding: 0 10px;
+  margin-right: 5px;
+  background-color: var(--light-gray-1);
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+}
+.misc__leaderboard__button > h3 {
+  font-size: 12px;
+}
+.misc__leaderboard__rank {
+  width: 100%;
+  background-color: #fffbec;
+  border-radius: 20px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: max-content 35px auto min-content;
+  grid-gap: 10px;
+  align-items: center;
+}
+.misc__leaderboard__rank__position {
+  font-style: italic;
+  color: var(--primary-gray);
+  font-size: 16px;
+  width: 24px;
+}
+.misc__leaderboard__rank__avatar {
+  width: 35px;
+  height: 35px;
+}
+.misc__leaderboard__rank__name {
+  color: var(--primary-gray);
+  font-size: 14px;
+}
+.misc__leaderboard__rank__pts {
+  justify-self: end;
+}
+.misc__leaderboard__rank__pts__value {
+  color: var(--primary-blue);
+  font-size: 16px;
+  margin-bottom: -2px;
+}
+.misc__leaderboard__rank__pts__label {
+  color: var(--primary-gray);
+  font-size: 12px;
+  text-align: center;
+}
+
+.misc__content__players {
+  margin-top: 10px;
+  display: flex;
+}
+.misc__players__player {
+  border-radius: 50%;
+  border: 5px solid var(--white);
+  margin-right: -10px;
+}

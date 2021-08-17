@@ -1,0 +1,25 @@
+.rooms {
+  padding: 20px 0 0 30px;
+  border-right: 2px solid var(--light-gray-2);
+  background-color: var(--white);
+  z-index: 10;
+}
+.room {
+  height: 63px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 11px;
+}
+.room__icon {
+  background-color: var(--light-gray-3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 17px;
+}
+.room__info__name {
+  font-size: 13px;
+}
+.room__info__desc {
+  font-size: 12px;
+}

@@ -16,7 +16,7 @@
   position: absolute;
   right: 15px;
   width: 360px;
-  z-index: 2;
+  z-index: 20;
   margin-top: 5px;
   padding: 8px;
   background-color: var(--white);
@@ -58,10 +58,9 @@
   grid-gap: 10px;
 }
 .nav__dropdown__option__icon {
-  width: 36px !important;
-  height: 36px !important;
+  font-size: 22px;
   padding: 7px;
-  background-color: #edf1f4;
+  background-color: #EDF1F4;
   border-radius: 50%;
   color: var(--primary-gray);
 }
@@ -85,9 +84,7 @@
 .nav__login:hover {
   background-color: var(--primary-blue);
   color: var(--white);
-  font-weight: 600;
 }
-
 
 /***** DIVIDER *****/
 .nav__divider {
