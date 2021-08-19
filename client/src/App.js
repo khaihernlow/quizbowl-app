@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact>
+        <Route path="/room/:roomID">
           <Game />
         </Route>
         <Route path="/auth" exact>

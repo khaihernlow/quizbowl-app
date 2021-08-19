@@ -13,3 +13,6 @@ API.interceptors.request.use((req) => {
 // AUTH
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);
+
+// ROOM
+export const getRoom = (roomID) => API.get(`/room/${roomID}`);

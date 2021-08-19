@@ -6,6 +6,9 @@
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
+.chat-stream > :first-child {
+  margin-top: auto;
+}
 .chat-stream::-webkit-scrollbar {
   width: 12px;
 }
@@ -25,7 +28,6 @@
   display: grid;
   grid-template-columns: min-content min-content auto max-content;
   align-items: center;
-  margin-top: auto;
 }
 .chat-msg__label {
   margin-right: 20px;
