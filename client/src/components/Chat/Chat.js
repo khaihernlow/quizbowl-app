@@ -11,6 +11,7 @@ const Chat = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const [name, setName] = useState(user?.result?.username);
   const [room, setRoom] = useState('ScienceBowl');
+  const [question, setQuestion] = useState({});
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const ENDPOINT = 'http://localhost:8000/';
@@ -30,11 +31,16 @@ const Chat = () => {
     socket.on('message', (message) => {
       setMessages((messages) => [...messages, message]);
     });
+    socket.on('question', (question) => {
+      setQuestion(question);
+    });
   }, []);
 
   const sendMessage = (e, inputMode) => {
     e.preventDefault();
 
+    //setMessage((prevMessage) => prevMessage.trim());
+    //console.log(message);
     if (message) {
       socket.emit('sendMessage', message, inputMode, () => setMessage(''));
     }
@@ -49,7 +55,7 @@ const Chat = () => {
 
   return (
     <div className="chats" style={chatsStyles}>
-      <QuestionPanel />
+      <QuestionPanel question={question} user={user}/>
       <ChatStream messages={messages} />
       <Input
         message={message}

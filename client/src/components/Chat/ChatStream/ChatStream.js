@@ -33,9 +33,9 @@ const ChatStream = ({ messages }) => {
         <div key={i} className="chat-msg">
           <span
             className="material-icons-outlined chat-msg__label"
-            style={{ color: `${message.inputMode === 'chat' ? 'var(--secondary-blue)' : 'var(--green)'}` }}
+            style={{ color: `${message.messageStatus === 'chat' ? 'var(--secondary-blue)' : (message.messageStatus === 'correct') ? 'var(--green)' : (message.messageStatus === 'incorrect') ? 'var(--red)' : 'var(--light-gray-3)'}` }}
           >
-            {message.inputMode === 'chat' ? 'chat' : 'check'}
+            {message.messageStatus === 'chat' ? 'chat' : (message.messageStatus === 'correct') ? 'check' : (message.messageStatus === 'incorrect') ? 'clear' : null}
           </span>
           <div className="chat-msg__avatar">
             <Avatar size="40" letter={message.user.charAt(0).toUpperCase()} />

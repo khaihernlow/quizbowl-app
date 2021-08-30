@@ -17,7 +17,7 @@ const Input = ({ setMessage, sendMessage, message }) => {
       latestIsEnterReset.current = isEnterReset;
       setTimeout(() => {
         if (inputMode === '' && latestIsEnterReset.current) {
-          setInputMode('chat');
+          setInputMode('buzz');
           inputRef.current.focus();
           setIsEnterReset(false);
         }
@@ -32,7 +32,7 @@ const Input = ({ setMessage, sendMessage, message }) => {
       latestIsEnterReset.current = isEnterReset;
       setTimeout(() => {
         if (inputMode === '' && latestIsEnterReset.current) {
-          setInputMode('buzz');
+          setInputMode('chat');
           inputRef.current.focus();
           setIsEnterReset(false);
         }
@@ -66,7 +66,7 @@ const Input = ({ setMessage, sendMessage, message }) => {
       <label htmlFor="chat" className="chat-input__button">
         <span className="material-icons-outlined chat-input__button__icon">
           chat
-        </span>
+        </span> 
         <h3 className="chat-input__button__label">Chat</h3>
       </label>
 
@@ -84,20 +84,21 @@ const Input = ({ setMessage, sendMessage, message }) => {
       />
       <label htmlFor="buzz" className="chat-input__button">
         <span className="material-icons-outlined chat-input__button__icon">
-          radio_button_checked
+          lightbulb
         </span>
         <h3 className="chat-input__button__label">Buzz</h3>
       </label>
 
       <input
         className="chat-input__msg"
-        placeholder="[SPACE] to Chat     [ENTER] to Buzz"
+        placeholder="[ENTER] to Chat     [SPACE] to Buzz"
         type="text"
         ref={inputRef}
         value={message}
         onChange={({ target: { value } }) => setMessage(value)}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
+            //setMessage((message) => message.trim());
             sendMessage(event, inputMode);
             setInputMode('');
             setChecked(false);

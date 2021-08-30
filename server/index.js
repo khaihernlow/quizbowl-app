@@ -4,20 +4,24 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const socketio = require('socket.io');
 const http = require('http');
+
 dotenv.config();
 
-const { addUser, removeUser, getUser } = require('./socketio/user');
-
+// Import Files
 const userRoutes = require('./routes/user.js');
 const roomRoutes = require('./routes/room.js');
 
+// Requires the Express Module
 const app = express();
+
+// Initiate SocketIO
 const server = http.createServer(app);
 corsOptions = {
   cors: true,
   origins: ['http://localhost:3000', 'https://kh-socketio-chat.netlify.app//'],
 };
 const io = socketio(server, corsOptions);
+require('./socketio/chat')(io);
 
 app.use(cors());
 
@@ -26,56 +30,7 @@ app.use(express.json());
 app.use('/user', userRoutes);
 app.use('/room', roomRoutes);
 
-io.on('connect', (socket) => {
-  socket.on('join', ({ name, room }, callback) => {
-    const { error, user } = addUser({ id: socket.id, name, room });
-
-    if (error) return callback(error);
-
-    socket.join(user.room);
-
-    socket.emit('message', {
-      user: 'admin',
-      text: `${user.name}, welcome to room ${room}.`,
-      inputMode: 'chat',
-      timestamp: new Date(),
-    });
-    socket.broadcast.to(user.room).emit('message', {
-      user: 'admin',
-      text: `${user.name} has joined!`,
-      inputMode: 'chat',
-      timestamp: new Date(),
-    });
-
-    socket.on('sendMessage', (message, inputMode, callback) => {
-      const user = getUser(socket.id);
-
-      io.to(user.room).emit('message', {
-        user: user.name,
-        text: message,
-        inputMode: inputMode,
-        timestamp: new Date(),
-      });
-
-      callback();
-    });
-
-    socket.on('disconnect', () => {
-      const user = removeUser(socket.id);
-      if (user) {
-        io.to(user.room).emit('message', {
-          user: 'admin',
-          text: `${user.name} has left.`,
-          inputMode: 'chat',
-          timestamp: new Date(),
-        });
-      }
-    });
-
-    callback();
-  });
-});
-
+// Connect to MongoDB Database
 mongoose.connect(
   process.env.MONGO_URL,
   { useNewUrlParser: true, useUnifiedTopology: true },

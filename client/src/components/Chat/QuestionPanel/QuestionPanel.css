@@ -13,7 +13,7 @@
 }
 .chat-question__bar__read {
   background-color: var(--primary-blue);
-  width: 327px;
+  width: 100%;
   height: 100%;
   border-radius: 50px 0 0 50px;
 }
@@ -48,4 +48,69 @@
   color: var(--white);
   font-size: 14px;
   border-radius: 0 0 10px 10px;
+}
+.chat-question__conn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.MuiCircularProgress-colorPrimary {
+  color: var(--primary-blue) !important;
+}
+.chat-question__conn__text {
+  font-size: 14px;
+  color: var(--black);
+}
+.chat-question__prestart {
+  display: grid;
+  grid-template-columns: auto max-content;
+}
+.chat-question__prestart__text__greeting {
+  font-size: 14px;
+  color: var(--black);
+}
+.chat-question__prestart__text__room {
+  font-size: 14px;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+}
+.chat-question__prestart__text__room__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #E1EDFF;
+  color: var(--primary-blue);
+  border-radius: 4px;
+  padding: 5px;
+  height: 21px;
+  margin: 0 8px;
+}
+.chat-question__prestart__text__room__tag__icon {
+  font-size: 18px;
+}
+.chat-question__prestart__text__room__tag__text {
+  font-size: 14px;
+}
+.chat-quesiton__prestart__btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chat-question__prestart__btn__guide, .chat-question__prestart__btn__start {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 10px;
+  height: 100%;
+  font-size: 14px;
+  cursor: pointer;
+}
+.chat-question__prestart__btn__guide {
+  background-color: #E1EDFF;
+  color: var(--primary-blue);
+}
+.chat-question__prestart__btn__start {
+  background-color: var(--primary-blue);
+  color: var(--white);
 }
