@@ -41,7 +41,7 @@ const Auth = () => {
     <>
       <div className="auth__nav">
         <div className="auth__nav__logo"></div>
-        <Link to="/room" className="link-style">
+        <Link to="/room/sciencebowl" className="link-style">
           <h1 className="auth__nav__text">Quizbowl</h1>
         </Link>
       </div>

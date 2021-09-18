@@ -15,9 +15,10 @@
 .chat-input__button {
   height: 100%;
   border-radius: 10px;
+  border: 1px solid var(--primary-blue);
   padding: 0 10px;
   margin-right: 10px;
-  background-color: var(--light-gray-1);
+  /* background-color: var(--light-gray-1); */
   display: flex;
   align-items: center;
 }

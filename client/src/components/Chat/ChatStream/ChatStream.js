@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import Avatar from './../../Avatar/Avatar';
 import './ChatStream.css';
+import ReadMore from './ReadMore';
 
 const ChatStream = ({ messages }) => {
   const messagesEndRef = useRef(null);
@@ -33,9 +34,29 @@ const ChatStream = ({ messages }) => {
         <div key={i} className="chat-msg">
           <span
             className="material-icons-outlined chat-msg__label"
-            style={{ color: `${message.messageStatus === 'chat' ? 'var(--secondary-blue)' : (message.messageStatus === 'correct') ? 'var(--green)' : (message.messageStatus === 'incorrect') ? 'var(--red)' : 'var(--light-gray-3)'}` }}
+            style={{
+              color: `${
+                message.messageStatus === 'chat'
+                  ? 'var(--secondary-blue)'
+                  : message.messageStatus === 'correct'
+                  ? 'var(--green)'
+                  : message.messageStatus === 'incorrect'
+                  ? 'var(--red)'
+                  : message.messageStatus === 'question'
+                  ? '#C4CBD0'
+                  : 'var(--light-gray-3)'
+              }`,
+            }}
           >
-            {message.messageStatus === 'chat' ? 'chat' : (message.messageStatus === 'correct') ? 'check' : (message.messageStatus === 'incorrect') ? 'clear' : null}
+            {message.messageStatus === 'chat'
+              ? 'chat'
+              : message.messageStatus === 'correct'
+              ? 'check'
+              : message.messageStatus === 'incorrect'
+              ? 'clear'
+              : message.messageStatus === 'question'
+              ? 'help_center'
+              : null}
           </span>
           <div className="chat-msg__avatar">
             <Avatar size="40" letter={message.user.charAt(0).toUpperCase()} />
@@ -45,7 +66,9 @@ const ChatStream = ({ messages }) => {
               <h3 className="chat-msg__main__user__name">{message.user}</h3>
               <h3 className="chat-msg__main__user__lvl">LVL 8</h3>
             </div>
-            <h4 className="chat-msg__main__content">{message.text}</h4>
+            <h4 className="chat-msg__main__content">
+              {message.messageStatus === 'question' ? <ReadMore textToDisplay={message.text} /> : message.text}
+            </h4>
           </div>
           <h3 className="chat-msg__time">{getLocalTime(message.timestamp)}</h3>
         </div>

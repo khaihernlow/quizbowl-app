@@ -14,6 +14,8 @@ const Chat = () => {
   const [question, setQuestion] = useState({});
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [buzz, setBuzz] = useState({});
+  const [newMessage, setNewMessage] = useState();
   const ENDPOINT = 'http://localhost:8000/';
 
   useEffect(() => {
@@ -30,20 +32,37 @@ const Chat = () => {
   useEffect(() => {
     socket.on('message', (message) => {
       setMessages((messages) => [...messages, message]);
+
+      if (message.messageStatus === 'correct' || message.messageStatus === 'incorrect') {
+        setBuzz({});
+        if (message.messageStatus === 'correct') {
+          setNewMessage(message);
+        }
+      }
     });
     socket.on('question', (question) => {
       setQuestion(question);
+    });
+    socket.on('buzz', (buzz) => {
+      setBuzz(buzz);
     });
   }, []);
 
   const sendMessage = (e, inputMode) => {
     e.preventDefault();
 
+    //if (inputMode === 'buzz') setBuzz({});
+
     //setMessage((prevMessage) => prevMessage.trim());
     //console.log(message);
-    if (message) {
+    if (message || inputMode === 'buzz') {
       socket.emit('sendMessage', message, inputMode, () => setMessage(''));
     }
+  };
+
+  const requestBuzz = () => {
+    console.log('buzz requested from client');
+    socket.emit('requestBuzz');
   };
 
   const chatsStyles = {
@@ -55,13 +74,9 @@ const Chat = () => {
 
   return (
     <div className="chats" style={chatsStyles}>
-      <QuestionPanel question={question} user={user}/>
+      <QuestionPanel question={question} user={user} buzz={buzz} newMessage={newMessage}/>
       <ChatStream messages={messages} />
-      <Input
-        message={message}
-        setMessage={setMessage}
-        sendMessage={sendMessage}
-      />
+      <Input message={message} setMessage={setMessage} sendMessage={sendMessage} requestBuzz={requestBuzz} buzz={buzz} />
     </div>
   );
 };

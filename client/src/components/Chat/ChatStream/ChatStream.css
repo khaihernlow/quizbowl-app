@@ -1,10 +1,12 @@
 .chat-stream {
   padding: 0 16px 30px 16px;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   gap: 17px;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  z-index: 0;
 }
 .chat-stream > :first-child {
   margin-top: auto;
@@ -56,9 +58,14 @@
   text-transform: uppercase;
 }
 .chat-msg__main__content {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--black);
   margin-right: 10px;
+}
+.chat__message__main__content__read-question {
+  color: var(--secondary-gray);
+  cursor: pointer;
+  display: inline-flex;
 }
 .chat-msg__time {
   font-size: 10px;

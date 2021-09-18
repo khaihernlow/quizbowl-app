@@ -3,28 +3,39 @@ import React, { useEffect, useRef, useState } from 'react';
 import useKeypress from '../../../hooks/useKeypress';
 import './Input.css';
 
-const Input = ({ setMessage, sendMessage, message }) => {
+const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
   const [checked, setChecked] = useState();
   const [inputMode, setInputMode] = useState('');
   const [isEnterReset, setIsEnterReset] = useState(true);
   const latestIsEnterReset = useRef(isEnterReset);
-
   const inputRef = useRef();
-
+  
+  let buzzRequested = false;
+  
   useKeypress(
     ' ',
     () => {
       latestIsEnterReset.current = isEnterReset;
-      setTimeout(() => {
-        if (inputMode === '' && latestIsEnterReset.current) {
+      let buzzDetect;
+
+      buzzDetect = setTimeout(() => {
+        if (inputMode === '' && latestIsEnterReset.current && buzzRequested === false) {
           setInputMode('buzz');
+          requestBuzz();
+          buzzRequested = true;
           inputRef.current.focus();
           setIsEnterReset(false);
         }
       }, 0);
+
+      return () => clearTimeout(buzzDetect);
     },
     [inputMode, isEnterReset, latestIsEnterReset]
   );
+
+  useEffect(() => {
+    buzzRequested = false;
+  }, [buzz]);
 
   useKeypress(
     'Enter',
@@ -48,6 +59,16 @@ const Input = ({ setMessage, sendMessage, message }) => {
   useEffect(() => {
     inputRef.current.focus();
   }, [inputMode]);
+
+  useEffect(() => {
+    if (Object.keys(buzz).length === 0) {
+      console.log(buzz);
+      setInputMode('');
+      setIsEnterReset(true);
+      inputRef.current.blur();
+      setMessage('');
+    }
+  }, [buzz])
 
   return (
     <div className="chat-input">
@@ -79,6 +100,7 @@ const Input = ({ setMessage, sendMessage, message }) => {
         onClick={() => {
           setInputMode('buzz');
           setIsEnterReset(false);
+          requestBuzz();
         }}
         disabled={inputMode === 'chat'}
       />

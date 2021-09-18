@@ -7,7 +7,7 @@ export const signIn = (formData, history) => async (dispatch) => {
 
         dispatch({ type: AUTH, data });
 
-        history.push('/room');
+        history.push('/room/sciencebowl');
     } catch (error) {
         console.log(error);
     }
@@ -19,7 +19,7 @@ export const signUp = (formData, history) => async (dispatch) => {
 
         dispatch({ type: AUTH, data });
 
-        history.push('/room');
+        history.push('/room/sciencebowl');
     } catch (error) {
         console.log(error);
     }
