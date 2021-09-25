@@ -7,12 +7,18 @@ import thunk from 'redux-thunk';
 import { reducers } from './reducers';
 import App from './App';
 import './index.css';
+import { AuthContextProvider } from './contexts/auth';
+import { SocketContextProvider } from './contexts/socket';
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AuthContextProvider>
+      <SocketContextProvider>
+        <App />
+      </SocketContextProvider>
+    </AuthContextProvider>
   </Provider>,
   document.getElementById('root')
 );

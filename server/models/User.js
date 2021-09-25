@@ -13,6 +13,19 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  stats: {
+    level: {
+      type: Number
+    },
+    coins: {
+      type: Number
+    },
+    sciencebowl: {
+      points: {
+        type: Number,
+      }
+    }
+  }
 });
 
 module.exports = mongoose.model('User', userSchema);

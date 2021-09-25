@@ -7,19 +7,17 @@ const MiscBar = () => {
   return (
     <div className="misc">
       <div className="misc__info">
-        <div className="misc__content__stats">
-          <div className="misc__content__stats__tab">
-            <h4 className="misc__content__stats__tab__label">Points</h4>
-            <h3 className="misc__content__stats__tab__value">1770</h3>
-          </div>
-          <div className="misc__content__stats__tab">
-            <h4 className="misc__content__stats__tab__label">Level</h4>
-            <h3 className="misc__content__stats__tab__value">8</h3>
-          </div>
-          <div className="misc__content__stats__tab">
-            <h4 className="misc__content__stats__tab__label">Coins</h4>
-            <h3 className="misc__content__stats__tab__value">325</h3>
-          </div>
+        <div className="misc__heading">
+          <span className="material-icons-outlined misc__heading__icon">
+            campaign
+          </span>
+          <h4 className="misc__heading__label">Announcements</h4>
+        </div>
+        <div className="misc__content__announcement">
+          <h4>
+            Remember the Regionals are next week starting Saturday morning at
+            10am.
+          </h4>
         </div>
       </div>
 
@@ -27,7 +25,9 @@ const MiscBar = () => {
 
       <div className="misc__info">
         <div className="misc__heading">
-          <span className="material-icons-outlined misc__heading__icon">leaderboard</span>
+          <span className="material-icons-outlined misc__heading__icon">
+            leaderboard
+          </span>
           <h4 className="misc__heading__label">Leaderboard</h4>
         </div>
         <div className="misc__content__leaderboard">
@@ -43,48 +43,48 @@ const MiscBar = () => {
           <div className="misc__leaderboard__rank">
             <h2 className="misc__leaderboard__rank__position">1</h2>
             <div className="misc__leaderboard__rank__avatar">
-              <Avatar size="30" letter="K" />
-            </div>
+              <Avatar size="35" letter="K" />
+            </div>  
             <h3 className="misc__leaderboard__rank__name">khaihern</h3>
             <div className="misc__leaderboard__rank__pts">
               <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
-              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+              <h4 className="misc__leaderboard__rank__pts__label">PTS</h4>
             </div>
           </div>
 
           <div className="misc__leaderboard__rank">
             <h2 className="misc__leaderboard__rank__position">1</h2>
             <div className="misc__leaderboard__rank__avatar">
-              <Avatar size="30" letter="K" />
-            </div>
+              <Avatar size="35" letter="K" />
+            </div>  
             <h3 className="misc__leaderboard__rank__name">khaihern</h3>
             <div className="misc__leaderboard__rank__pts">
               <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
-              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+              <h4 className="misc__leaderboard__rank__pts__label">PTS</h4>
             </div>
           </div>
 
           <div className="misc__leaderboard__rank">
             <h2 className="misc__leaderboard__rank__position">1</h2>
             <div className="misc__leaderboard__rank__avatar">
-              <Avatar size="30" letter="K" />
-            </div>
+              <Avatar size="35" letter="K" />
+            </div>  
             <h3 className="misc__leaderboard__rank__name">khaihern</h3>
             <div className="misc__leaderboard__rank__pts">
               <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
-              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+              <h4 className="misc__leaderboard__rank__pts__label">PTS</h4>
             </div>
           </div>
 
           <div className="misc__leaderboard__rank">
             <h2 className="misc__leaderboard__rank__position">1</h2>
             <div className="misc__leaderboard__rank__avatar">
-              <Avatar size="30" letter="K" />
-            </div>
+              <Avatar size="35" letter="K" />
+            </div>    
             <h3 className="misc__leaderboard__rank__name">khaihern</h3>
             <div className="misc__leaderboard__rank__pts">
               <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
-              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+              <h4 className="misc__leaderboard__rank__pts__label">PTS</h4>
             </div>
           </div>
         </div>
@@ -94,28 +94,30 @@ const MiscBar = () => {
 
       <div className="misc__info">
         <div className="misc__heading">
-          <span className="material-icons-outlined misc__heading__icon">people</span>
+          <span className="material-icons-outlined misc__heading__icon">
+            people
+          </span>
           <h4 className="misc__heading__label">Players</h4>
         </div>
         <div className="misc__content__players">
           <div className="misc__players__player">
             <Avatar size="35" letter="K" />
-          </div>
+          </div>  
           <div className="misc__players__player">
             <Avatar size="35" letter="K" />
-          </div>
+          </div>  
           <div className="misc__players__player">
             <Avatar size="35" letter="K" />
-          </div>
+          </div>  
           <div className="misc__players__player">
             <Avatar size="35" letter="K" />
-          </div>
+          </div>  
           <div className="misc__players__player">
             <Avatar size="35" letter="K" />
-          </div>
+          </div>  
           <div className="misc__players__player">
             <Avatar size="35" letter="K" />
-          </div>
+          </div>  
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const jwt_decode = require('jwt-decode');
 let serverInstance = '';
 
 module.exports = (io) => {
@@ -8,15 +10,31 @@ module.exports = (io) => {
   let buzzStartTime = '';
   let buzzInProgress = false;
 
-  io.on('connect', (socket) => {
-    socket.on('join', ({ name, room }, callback) => {
+  io.use((socket, next) => {
+    if (socket.handshake.query && socket.handshake.query.token) {
+      jwt.verify(socket.handshake.query.token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return next(new Error('Authentication error'));
+        socket.decoded = decoded;
+        console.log('Socket Authorization Successful');
+        next();
+      });
+    } else {
+      next(new Error('Authentication error'));
+    }
+  }).on('connect', (socket) => {
+    socket.on('join', ({ room }, callback) => {
+      let username;
+      console.log(socket.handshake.query.token);
+      const decodedToken = jwt_decode(socket.handshake.query.token);
+      username = decodedToken.username;
+      console.log(username);
+
+      const { error, user } = addUser({ id: socket.id, name: username, room });
+      if (error) return callback(error);
+
       if (serverInstance === '') {
         serverInstance = socket.id;
       }
-
-      const { error, user } = addUser({ id: socket.id, name, room });
-
-      if (error) return callback(error);
 
       socket.join(user.room);
 
@@ -49,11 +67,11 @@ module.exports = (io) => {
       async function testRun() {
         ({ question } = getQuestion());
         ({ answer } = getAnswer());
-        console.log('❓: ' + question.text);
-        console.log('💬: ' + answer);
+        //console.log('❓: ' + question.text);
+        //console.log('💬: ' + answer);
 
         let timeDiff = new Date(question.unreadEndTime).getTime() - new Date();
-        console.log('⌛: ' + timeDiff);
+        //console.log('⌛: ' + timeDiff);
         io.to(user.room).emit('question', question);
 
         questionEndTime = new Date(question.unreadEndTime);
@@ -77,8 +95,8 @@ module.exports = (io) => {
           timestamp: new Date(),
         });
 
-        console.log('Question done');
-        console.log('--------------------');
+        //console.log('Question done');
+        //console.log('--------------------');
 
         await new Promise((r) => setTimeout(r, 2000));
         testRun();
@@ -102,8 +120,8 @@ module.exports = (io) => {
           buzzInProgress = false;
           clearTimeout(nulifyBuzz);
           // io.to(user.room).emit('buzz', {});
-          console.log('Message: ' + message);
-          console.log(message.toLowerCase() === answer.toLowerCase());
+          //console.log('Message: ' + message);
+          //console.log(message.toLowerCase() === answer.toLowerCase());
           // console.log('answer: ' + answer);
           if (message.toLowerCase() === answer.toLowerCase()) {
             messageStatus = 'correct';

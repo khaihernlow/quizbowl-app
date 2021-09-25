@@ -1,7 +1,9 @@
+const User = require('../models/User.js');
 const users = [];
 
 const addUser = ({ id, name, room }) => {
   const existingUser = users.find((user) => user.room === room && user.name === name);
+  //const existingUser = await User.findOne({ username });
 
   if (existingUser) {
     return { error: 'Username is taken' };

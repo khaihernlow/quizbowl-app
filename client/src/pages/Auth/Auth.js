@@ -1,27 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import { AuthContext } from '../../contexts/auth';
+import { CircularProgress } from '@material-ui/core';
 
 import './Auth.css';
 import { signIn, signUp } from '../../actions/auth';
+import { AUTH_NEUTRAL } from '../../constants/actionTypes';
 
 const initialState = { username: '', password: '' };
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState(initialState);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const history = useHistory();
+  const { user, isFetching, error, dispatch } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     console.log(formData);
     if (isSignup) {
-      dispatch(signUp(formData, history));
+      signUp(formData, history, dispatch);
     } else {
-      dispatch(signIn(formData, history));
+      signIn(formData, history, dispatch);
     }
   };
 
@@ -35,6 +39,7 @@ const Auth = () => {
 
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
+    dispatch({ type: AUTH_NEUTRAL })
   };
 
   return (
@@ -50,18 +55,14 @@ const Auth = () => {
 
       <div className="auth__main-container">
         <div className="auth__hero">
-          <h1 className="auth__hero__text">
-            Compete with Players and practice on Thousands of Questions
-          </h1>
+          <h1 className="auth__hero__text">Compete with Players and practice on Thousands of Questions</h1>
         </div>
         <div className="auth__form-wrapper">
           <form className="auth__form" onSubmit={handleSubmit}>
             <GoogleLogin
               clientId="510460764367-5tspg6fvb66o78kr7nmmj2s3pkbs7f0j.apps.googleusercontent.com"
               className="auth__form__google"
-              buttonText={
-                isSignup ? 'Sign up with Google' : 'Sign in with Google'
-              }
+              buttonText={isSignup ? 'Sign up with Google' : 'Sign in with Google'}
               theme="dark"
               onSuccess={googleSuccess}
               onFailure={googleFailure}
@@ -84,28 +85,21 @@ const Auth = () => {
               placeholder="Enter your password"
               onChange={handleChange}
             />
-            <input
-              type="submit"
-              className="auth__form__submit"
-              value={isSignup ? 'Sign Up' : 'Sign In'}
-            />
+            {error && <h4 className="auth__form__error">Incorrect username or password.</h4>}
+            <button type="submit" className="auth__form__submit" disabled={isFetching}>
+              {isFetching ? <CircularProgress color="#D8D8D8" size="20px" /> : isSignup ? 'Sign Up' : 'Sign In'}
+            </button>
             {isSignup ? (
               <h4 className="auth__form__switchAuthMode">
                 Already on Quizbowl?{' '}
-                <span
-                  className="auth__form__switchAuthMode__link"
-                  onClick={switchMode}
-                >
+                <span className="auth__form__switchAuthMode__link" onClick={switchMode}>
                   Log in
                 </span>
               </h4>
             ) : (
               <h4 className="auth__form__switchAuthMode">
                 Not a member yet?{' '}
-                <span
-                  className="auth__form__switchAuthMode__link"
-                  onClick={switchMode}
-                >
+                <span className="auth__form__switchAuthMode__link" onClick={switchMode}>
                   Sign up
                 </span>
               </h4>

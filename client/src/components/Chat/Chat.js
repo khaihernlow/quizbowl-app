@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import React, { useContext, useEffect, useState } from 'react';
+// import io from 'socket.io-client';
+import { AuthContext } from '../../contexts/auth';
+import { SocketContext } from '../../contexts/socket';
 
 import ChatStream from './ChatStream/ChatStream';
 import Input from './Input/Input';
 import QuestionPanel from './QuestionPanel/QuestionPanel';
 
-let socket;
+// let socket;
 
 const Chat = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const { user } = useContext(AuthContext);
   const [name, setName] = useState(user?.result?.username);
   const [room, setRoom] = useState('ScienceBowl');
   const [question, setQuestion] = useState({});
@@ -16,18 +18,22 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [buzz, setBuzz] = useState({});
   const [newMessage, setNewMessage] = useState();
-  const ENDPOINT = 'http://localhost:8000/';
+  // const ENDPOINT = 'http://localhost:8000/';
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
-    socket = io(ENDPOINT);
-    console.log(socket);
+    // const token = JSON.parse(localStorage.getItem('profile')).token || null;
+    // socket = io(ENDPOINT, {
+    //   query: {token}
+    // });
+    // console.log(socket);
 
-    socket.emit('join', { name, room }, (error) => {
+    socket.emit('join', { room }, (error) => {
       if (error) {
         alert(error);
       }
     });
-  }, [ENDPOINT]);
+  }, [socket]);
 
   useEffect(() => {
     socket.on('message', (message) => {

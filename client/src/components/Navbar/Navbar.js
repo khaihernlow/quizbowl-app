@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 
 import Avatar from '../Avatar/Avatar';
 import './Navbar.css';
+import { AuthContext } from '../../contexts/auth';
 
 const Navbar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const { user } = useContext(AuthContext);
+  console.log(user);   
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -19,8 +22,7 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch({ type: 'LOGOUT' });
-    history.push('/');
-    setUser(null);
+    history.push('/auth');
   };
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const Navbar = () => {
       const decodedToken = decode(token);
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
-    setUser(JSON.parse(localStorage.getItem('profile')));
+    // setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location, user?.token]);
 
   return (
