@@ -31,9 +31,13 @@ app.use('/user', userRoutes);
 app.use('/room', roomRoutes);
 
 // Connect to MongoDB Database
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
-  console.log('Connected to MongoDB');
-});
+mongoose.connect(
+  process.env.MONGO_URL,
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+  () => {
+    console.log('Connected to MongoDB');
+  }
+);
 
 const port = process.env.PORT || 8000;
 server.listen(port, () => console.log(`Server has started on port: ${port}.`));

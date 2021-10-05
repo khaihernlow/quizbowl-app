@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Avatar from '../Avatar/Avatar';
+import { SocketContext } from '../../contexts/socket';
+import { Skeleton } from '@mui/material';
 
 import './Miscbar.css';
 
 const MiscBar = () => {
+  const socket = useContext(SocketContext);
+  const [userStats, setUserStats] = useState(null);
+
+  useEffect(() => {
+    socket.on('userStats', (userStats) => {
+      setUserStats(userStats.userStats);
+    });
+  }, []);
+
   return (
     <div className="misc">
       <div className="misc__info">
         <div className="misc__content__stats">
           <div className="misc__content__stats__tab">
             <h4 className="misc__content__stats__tab__label">Points</h4>
-            <h3 className="misc__content__stats__tab__value">1770</h3>
+            <h3 className="misc__content__stats__tab__value">
+              {userStats ? userStats.sciencebowl.points : <Skeleton variant="text" width={68} height={33} />}
+            </h3>
           </div>
           <div className="misc__content__stats__tab">
             <h4 className="misc__content__stats__tab__label">Level</h4>
-            <h3 className="misc__content__stats__tab__value">8</h3>
+            <h3 className="misc__content__stats__tab__value">
+              {userStats ? userStats.level : <Skeleton variant="text" width={68} height={33} />}
+            </h3>
           </div>
           <div className="misc__content__stats__tab">
             <h4 className="misc__content__stats__tab__label">Coins</h4>
-            <h3 className="misc__content__stats__tab__value">325</h3>
+            <h3 className="misc__content__stats__tab__value">
+              {userStats ? userStats.coins : <Skeleton variant="text" width={68} height={33} />}
+            </h3>
           </div>
         </div>
       </div>

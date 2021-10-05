@@ -125,7 +125,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
         if (distance > 0) {
           setReadTimeCountdown(`${distance}`);
         } else {
-          console.log(`Time Done! ${new Date()}`);
+          // console.log(`Time Done! ${new Date()}`);
           setReadTimeCountdown('0.0');
           clearInterval(readEndTime);
 
@@ -144,7 +144,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
         }
       }, 1);
 
-      console.log(question.text.split(/\r\n|\r|\n/).length);
+      // console.log(question.text.split(/\r\n|\r|\n/).length);
       let splitStr = question.text.split(' ');
       let count = 0;
 

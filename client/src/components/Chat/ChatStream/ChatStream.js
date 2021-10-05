@@ -15,13 +15,17 @@ const ChatStream = ({ messages }) => {
     let timeUnit = 'am';
     let date = new Date(timestamp);
     let hour = date.getHours();
+    let minute = date.getMinutes();
     if (hour > 12) {
       hour = date.getHours() - 12;
       timeUnit = 'pm';
     } else if (hour === 0) {
       hour = 12;
     }
-    return `${hour}:${date.getMinutes()} ${timeUnit}`;
+    if (minute < 10) {
+      minute = `0${minute}`;
+    }
+    return `${hour}:${minute} ${timeUnit}`;
   };
 
   useEffect(() => {

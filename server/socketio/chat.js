@@ -3,7 +3,7 @@ const jwt_decode = require('jwt-decode');
 let serverInstance = '';
 
 module.exports = (io) => {
-  const { addUser, removeUser, getUser } = require('./user');
+  const { addUser, removeUser, getUser, addPoints } = require('./user');
   const { getQuestion, getAnswer } = require('./question');
 
   let questionEndTime = '';
@@ -24,12 +24,16 @@ module.exports = (io) => {
   }).on('connect', (socket) => {
     socket.on('join', ({ room }, callback) => {
       let username;
-      console.log(socket.handshake.query.token);
       const decodedToken = jwt_decode(socket.handshake.query.token);
       username = decodedToken.username;
-      console.log(username);
 
-      const { error, user } = addUser({ id: socket.id, name: username, room });
+      const { error, user } = addUser({ socketId: socket.id, username, room }, (userStats) => {
+        if (userStats) {
+          socket.emit('userStats', {
+            userStats,
+          });
+        }
+      });
       if (error) return callback(error);
 
       if (serverInstance === '') {
@@ -40,13 +44,13 @@ module.exports = (io) => {
 
       socket.emit('message', {
         user: 'admin',
-        text: `${user.name}, welcome to room ${user.room}.`,
+        text: `${user.username}, welcome to room ${user.room}.`,
         messageStatus: 'chat',
         timestamp: new Date(),
       });
       socket.broadcast.to(user.room).emit('message', {
         user: 'admin',
-        text: `${user.name} has joined!`,
+        text: `${user.username} has joined!`,
         messageStatus: 'chat',
         timestamp: new Date(),
       });
@@ -109,7 +113,7 @@ module.exports = (io) => {
       let nulifyBuzz;
 
       socket.on('sendMessage', async (message, inputMode, callback) => {
-        const user = getUser(socket.id);
+        let user = getUser(socket.id);
         let messageStatus;
 
         ({ answer } = await getAnswer());
@@ -126,6 +130,10 @@ module.exports = (io) => {
           if (message.toLowerCase() === answer.toLowerCase()) {
             messageStatus = 'correct';
             questionEndTime = new Date();
+            let userStats = addPoints(user, 'tossup');
+            socket.emit('userStats', {
+              userStats
+            })
           } else {
             messageStatus = 'incorrect';
             questionEndTime = questionEndTime - (8000 - (new Date().getTime() - buzzStartTime.getTime()));
@@ -135,7 +143,7 @@ module.exports = (io) => {
         }
 
         io.to(user.room).emit('message', {
-          user: user.name,
+          user: user.username,
           text: message,
           messageStatus: messageStatus,
           timestamp: new Date(),
@@ -166,7 +174,7 @@ module.exports = (io) => {
         if (user) {
           io.to(user.room).emit('message', {
             user: 'admin',
-            text: `${user.name} has left.`,
+            text: `${user.username} has left.`,
             messageStatus: 'chat',
             timestamp: new Date(),
           });
