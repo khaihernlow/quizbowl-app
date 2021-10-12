@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Chat from '../../components/Chat/Chat';
 import Miscbar from '../../components/Miscbar/Miscbar';
 import Navbar from '../../components/Navbar/Navbar';
-import Rooms from '../../components/Rooms/Rooms';
+import Rooms from '../../components/LeftBar/LeftBar';
 import { useParams } from 'react-router';
 
 import './Game.css';
@@ -23,7 +23,7 @@ const Game = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="main-container">
         <Rooms />
         <Chat />

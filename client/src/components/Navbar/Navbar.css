@@ -14,7 +14,7 @@
   height: 30px;
   border-radius: 50%;
 }
-.nav__avatar__dropdown {
+/* .nav__avatar__dropdown {
   position: absolute;
   right: 15px;
   width: 360px;
@@ -49,7 +49,7 @@
   font-size: 17px;
   color: var(--primary-gray);
 }
-.nav__dropdown__profile__text__link {
+.nav__dropdown__profile__tex {
   color: var(--primary-gray);
   font-size: 12px;
 }
@@ -74,8 +74,8 @@
   font-size: 13px;
   color: var(--secondary-gray);
   margin-top: 8px;
-}
-.nav__login {
+} */
+/* .nav__login {
   background-color: var(--light-gray-2);
   padding: 5px 10px;
   border-radius: 8px;
@@ -86,7 +86,7 @@
 .nav__login:hover {
   background-color: var(--primary-blue);
   color: var(--white);
-}
+} */
 
 /***** DIVIDER *****/
 .nav__divider {

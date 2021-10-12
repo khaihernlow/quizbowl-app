@@ -125,3 +125,133 @@ const MiscBar = () => {
 };
 
 export default MiscBar;
+
+
+
+<div className="misc__info">
+        <div className="misc__heading">
+          <span className="material-icons-outlined misc__heading__icon">leaderboard</span>
+          <h4 className="misc__heading__label">Leaderboard</h4>
+        </div>
+        <div className="misc__content__leaderboard">
+          <div className="misc__leaderboard__buttons">
+            <div className="misc__leaderboard__button">
+              <h3>7 Days</h3>
+            </div>
+            <div className="misc__leaderboard__button">
+              <h3>All Time</h3>
+            </div>
+          </div>
+
+          <div className="misc__leaderboard__rank">
+            <h2 className="misc__leaderboard__rank__position">1</h2>
+            <div className="misc__leaderboard__rank__avatar">
+              <Avatar size="30" letter="K" />
+            </div>
+            <h3 className="misc__leaderboard__rank__name">khaihern</h3>
+            <div className="misc__leaderboard__rank__pts">
+              <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
+              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+            </div>
+          </div>
+
+          <div className="misc__leaderboard__rank">
+            <h2 className="misc__leaderboard__rank__position">1</h2>
+            <div className="misc__leaderboard__rank__avatar">
+              <Avatar size="30" letter="K" />
+            </div>
+            <h3 className="misc__leaderboard__rank__name">khaihern</h3>
+            <div className="misc__leaderboard__rank__pts">
+              <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
+              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+            </div>
+          </div>
+
+          <div className="misc__leaderboard__rank">
+            <h2 className="misc__leaderboard__rank__position">1</h2>
+            <div className="misc__leaderboard__rank__avatar">
+              <Avatar size="30" letter="K" />
+            </div>
+            <h3 className="misc__leaderboard__rank__name">khaihern</h3>
+            <div className="misc__leaderboard__rank__pts">
+              <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
+              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+            </div>
+          </div>
+
+          <div className="misc__leaderboard__rank">
+            <h2 className="misc__leaderboard__rank__position">1</h2>
+            <div className="misc__leaderboard__rank__avatar">
+              <Avatar size="30" letter="K" />
+            </div>
+            <h3 className="misc__leaderboard__rank__name">khaihern</h3>
+            <div className="misc__leaderboard__rank__pts">
+              <h2 className="misc__leaderboard__rank__pts__value">1770</h2>
+              <h4 className="misc__leaderboard__rank__pts__label"></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+.misc__leaderboard__buttons {
+  display: flex;
+}
+.misc__leaderboard__button {
+  height: 27px;
+  border-radius: 10px;
+  padding: 0 10px;
+  margin-right: 5px;
+  background-color: var(--light-gray-1);
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+}
+.misc__leaderboard__button > h3 {
+  font-size: 12px;
+}
+.misc__leaderboard__rank {
+  width: calc(100% - 10px);
+  height: 55px;
+  background-color: #FEFAEC;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 10px 0 0 10px;
+  display: grid;
+  grid-template-columns: max-content 35px auto min-content;
+  grid-gap: 10px;
+  align-items: center;
+}
+.misc__leaderboard__rank__position {
+  color: var(--white);
+  font-size: 13px;
+  width: 22px;
+  height: 22px;
+  background-color: #F4CB3F;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -22px;
+}
+.misc__leaderboard__rank__avatar {
+  width: 30px;
+  height: 30px;
+}
+.misc__leaderboard__rank__name {
+  color: var(--primary-gray);
+  font-size: 13px;
+}
+.misc__leaderboard__rank__pts {
+  justify-self: end;
+}
+.misc__leaderboard__rank__pts__value {
+  color: var(--primary-blue);
+  font-size: 15px;
+  margin-bottom: -2px;
+}
+.misc__leaderboard__rank__pts__label {
+  color: var(--primary-gray);
+  font-size: 12px;
+  text-align: center;
+}

@@ -5,14 +5,17 @@
   background-color: var(--white);
   z-index: 10;
 }
-.misc::-webkit-scrollbar {
+.misc::-webkit-scrollbar,
+.misc__leaderboard__table__wrapper::-webkit-scrollbar {
   width: 8px;
 }
-.misc::-webkit-scrollbar-track {
+.misc::-webkit-scrollbar-track,
+.misc__leaderboard__table__wrapper::-webkit-scrollbar-track {
   visibility: hidden;
   border: 2px solid transparent;
 }
-.misc::-webkit-scrollbar-thumb {
+.misc::-webkit-scrollbar-thumb,
+.misc__leaderboard__table__wrapper::-webkit-scrollbar-thumb {
   background-clip: padding-box;
   background-color: var(--secondary-gray);
   border-radius: 4px;
@@ -43,10 +46,10 @@
   gap: 10px;
 }
 .misc__content__stats__tab {
-  background-color: var(--light-gray-1);
   width: 100%;
   padding: 4px 10px;
   border-radius: 10px;
+  border: 1px solid var(--light-gray-3);
 }
 .misc__content__stats__tab__label {
   text-transform: uppercase;
@@ -62,68 +65,109 @@
   border: 1px solid var(--light-gray-3);
   border-radius: 10px;
   margin-top: 10px;
-  padding: 10px;
+  /* padding: 10px; */
 }
-.misc__leaderboard__buttons {
-  display: flex;
-}
-.misc__leaderboard__button {
-  height: 27px;
-  border-radius: 10px;
-  padding: 0 10px;
-  margin-right: 5px;
-  background-color: var(--light-gray-1);
-  color: var(--primary-blue);
+.misc__leaderboard__round {
+  height: 30px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
-.misc__leaderboard__button > h3 {
-  font-size: 12px;
+.misc__leaderboard__round__desc {
+  font-size: 14px;
+  color: var(--primary-gray);
 }
-.misc__leaderboard__rank {
-  width: calc(100% - 10px);
-  height: 55px;
-  background-color: #FEFAEC;
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin: 10px 0 0 10px;
-  display: grid;
-  grid-template-columns: max-content 35px auto min-content;
-  grid-gap: 10px;
-  align-items: center;
-}
-.misc__leaderboard__rank__position {
+.misc__leaderboard__round__status {
+  font-size: 10px;
   color: var(--white);
-  font-size: 13px;
-  width: 22px;
-  height: 22px;
-  background-color: #F4CB3F;
-  border-radius: 50%;
+  text-transform: uppercase;
+  background-color: var(--red);
+  border-radius: 5px;
+  padding: 0 8px;
+}
+.misc__leaderboard__stats {
+  background: url('./background.svg');
+  background-size: cover;
+  height: 40px;
+}
+.misc__leaderboard__stats__text {
+  width: 100%;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: -22px;
-}
-.misc__leaderboard__rank__avatar {
-  width: 30px;
-  height: 30px;
-}
-.misc__leaderboard__rank__name {
-  color: var(--primary-gray);
-  font-size: 13px;
-}
-.misc__leaderboard__rank__pts {
-  justify-self: end;
-}
-.misc__leaderboard__rank__pts__value {
+  font-size: 16px;
   color: var(--primary-blue);
-  font-size: 15px;
-  margin-bottom: -2px;
+  letter-spacing: 0.04em;
 }
-.misc__leaderboard__rank__pts__label {
-  color: var(--primary-gray);
+.misc__leaderboard__toggle {
+  width: 100%;
+  height: 25px;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+}
+.misc__leaderboard__toggle__option {
   font-size: 12px;
   text-align: center;
+  cursor: pointer;
+  color: #b3b9c0;
+}
+.misc__leaderboard__toggle__option--active {
+  color: var(--primary-blue);
+  border-bottom: 1px solid var(--primary-blue);
+}
+
+.misc__leaderboard__table__wrapper {
+  overflow-y: auto;
+  height: 180px;
+}
+.misc__leaderboard__table__wrapper thead th {
+  position: sticky;
+  top: 0;
+}
+.misc__leaderboard__table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.misc__leaderboard__table th {
+  height: 28px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--secondary-gray);
+  text-align: left;
+  background-color: var(--light-gray-1);
+  filter: drop-shadow(0px 4px 4px rgba(53, 56, 65, 0.1));
+}
+.misc__leaderboard__table tr:first-child td {
+  padding-top: 10px;
+}
+.misc__leaderboard__table tr td {
+  padding-bottom: 6px;
+}
+.misc__leaderboard__table__td__rank {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--primary-gray);
+}
+.misc__leaderboard__table__td__name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary-gray);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.misc__leaderboard__table__td__neg {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red);
+}
+.misc__leaderboard__table__td__pts {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--secondary-blue);
 }
 
 .misc__content__players {

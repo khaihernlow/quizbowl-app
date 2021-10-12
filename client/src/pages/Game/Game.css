@@ -1,5 +1,6 @@
 .main-container {
   display: grid;
-  grid-template-columns: 312px auto 324px;
-  height: calc(100vh - 57px);
+  grid-template-columns: 280px auto 324px;
+  /* height: calc(100vh - 57px); */
+  height: 100vh;
 }

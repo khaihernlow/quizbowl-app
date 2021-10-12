@@ -1,0 +1,152 @@
+.leftBar {
+  padding: 18px 15px;
+  background-color: var(--white);
+  border-right: 2px solid var(--light-gray-2);
+}
+.leftBar__brand {
+  background-color: var(--light-gray-1);
+  width: 100%;
+  border-radius: 5px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.leftBar__brand__logo {
+  width: 35px;
+  height: 35px;
+  background-color: var(--primary-blue);
+  border-radius: 50%;
+}
+.leftBar__brand__name {
+  font-size: 18px;
+  color: var(--primary-blue);
+}
+.leftBar__quickSelect {
+  margin-top: 15px;
+}
+.leftBar__quickSelect__user {
+  position: relative;
+}
+.leftBar__quickSelect__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.leftBar__quickSelect__option:hover {
+  background-color: var(--light-gray-1);
+}
+.leftBar__quickSelect__option__icon {
+  width: 35px;
+  height: 35px;
+  font-size: 35px;
+  color: #B3B9C0;
+}
+.leftBar__quickSelect__option__label {
+  font-size: 13px;
+  color: var(--primary-gray);
+}
+
+.leftBar__avatar__dropdown {
+  position: absolute;
+  top: -20px;
+  right: -370px;
+  width: 360px;
+  z-index: 20;
+  margin-top: 5px;
+  padding: 8px;
+  background-color: var(--white);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+}
+.leftBar__avatar__dropdown .leftBar__dropdown__item {
+  padding: 8px;
+  border-radius: 8px;
+}
+.leftBar__avatar__dropdown .leftBar__dropdown__item:hover {
+  background-color: var(--light-gray-1);
+  cursor: pointer;
+}
+.leftBar__dropdown__hr {
+  border: 1px solid var(--light-gray-2);
+  margin: 8px 8px;
+}
+.leftBar__dropdown__profile {
+  display: flex;
+  align-items: center;
+}
+.leftBar__dropdown__profile__text {
+  margin-left: 10px;
+}
+.leftBar__dropdown__profile__text__name {
+  font-size: 17px;
+  color: var(--primary-gray);
+}
+.leftBar__dropdown__profile__text__link {
+  color: var(--primary-gray);
+  font-size: 12px;
+}
+.leftBar__dropdown__option {
+  display: grid;
+  grid-template-columns: max-content auto max-content;
+  align-items: center;
+  grid-gap: 10px;
+}
+.leftBar__dropdown__option__icon {
+  font-size: 22px;
+  padding: 7px;
+  background-color: #EDF1F4;
+  border-radius: 50%;
+  color: var(--primary-gray);
+}
+.leftBar__dropdown__option__text {
+  font-size: 14px;
+  color: var(--primary-gray);
+}
+.leftBar__dropdown__copyright {
+  font-size: 13px;
+  color: var(--secondary-gray);
+  margin-top: 8px;
+}
+
+.leftBar__login {
+  background-color: var(--light-gray-1);
+  font-size: 13px;
+  color: var(--primary-blue);
+  text-align: center;
+  margin-bottom: 5px;
+}
+.leftBar__login:hover {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+/* .rooms {
+  padding: 20px 0 0 30px;
+  border-right: 2px solid var(--light-gray-2);
+  background-color: var(--white);
+  z-index: 10;
+}
+.room {
+  height: 63px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 11px;
+}
+.room__icon {
+  background-color: var(--light-gray-3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 17px;
+}
+.room__info__name {
+  font-size: 13px;
+}
+.room__info__desc {
+  font-size: 12px;
+} */

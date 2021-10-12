@@ -54,6 +54,7 @@ const getQuestion = () => {
     counter += 1;
   }
   tossup_question = questions[counter].tossup_question;
+  category = questions[counter].category;
 
   const readEndTime = new Date(now.getTime() + 80 * tossup_question.split(' ').length);
   const unreadEndTime = new Date(readEndTime.getTime() + 5000);
@@ -62,6 +63,7 @@ const getQuestion = () => {
     text: tossup_question,
     readEndTime: readEndTime,
     unreadEndTime: unreadEndTime,
+    category: category,
   };
 
   return { question };

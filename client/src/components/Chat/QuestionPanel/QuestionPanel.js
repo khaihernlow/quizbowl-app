@@ -204,6 +204,18 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
         </div>
       ) : !connecting && !preStart ? (
         <>
+          <div className="chat-question__labels">
+            {displayBuzz && (
+              <motion.h2 className="chat-question__labels__tag chat-question__labels__tag__buzz" layout>
+                <span className="material-icons-outlined chat-question__labels__tag__buzz__icon">
+                  notifications_active
+                </span>
+                {buzz?.user} Buzzed
+              </motion.h2>
+            )}
+            <motion.h3 className="chat-question__labels__tag" layout>{question?.category}</motion.h3>
+            <motion.h3 className="chat-question__labels__tag" layout>Hw-Chemistry</motion.h3>
+          </div>
           <div className="chat-question__bar">
             {displayBuzz ? (
               <>

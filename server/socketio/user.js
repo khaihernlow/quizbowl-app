@@ -25,17 +25,19 @@ const addUser = ({ socketId, username, room }, callback) => {
 const removeUser = async (socketId) => {
   const index = users.findIndex((user) => user.socketId === socketId);
 
-  if (index !== -1) {
-    await User.findOne({ username: users[parseInt(index)].username }, '-password', async (err, doc) => {
-      if (err) return console.log(err);
-      console.log('heere');
-      console.log(users[parseInt(index)]);
-      doc.stats = users[parseInt(index)]?.stats;
-      await doc.save();
-    });
-    return users.splice(index, 1)[0];
-  }
-  console.log(users);
+  // if (index !== -1) {
+  //   await User.findOne({ username: users[parseInt(index)].username }, '-password', async (err, doc) => {
+  //     if (err) return console.log(err);
+  //     console.log('heere');
+  //     console.log(users[parseInt(index)]);
+  //     doc.stats = users[parseInt(index)]?.stats;
+  //     await doc.save();
+  //   });
+  //   return users.splice(index, 1)[0];
+  // }
+  // console.log(users);
+
+  return users.splice(index, 1)[0];
 };
 
 const addPoints = (user, typeOfQuestion) => {

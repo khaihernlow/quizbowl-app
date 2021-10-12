@@ -132,8 +132,8 @@ module.exports = (io) => {
             questionEndTime = new Date();
             let userStats = addPoints(user, 'tossup');
             socket.emit('userStats', {
-              userStats
-            })
+              userStats,
+            });
           } else {
             messageStatus = 'incorrect';
             questionEndTime = questionEndTime - (8000 - (new Date().getTime() - buzzStartTime.getTime()));
@@ -166,6 +166,7 @@ module.exports = (io) => {
 
         io.to(user.room).emit('buzz', {
           buzzEndTime: new Date(new Date().getTime() + 8000),
+          user: user.username,
         });
       });
 

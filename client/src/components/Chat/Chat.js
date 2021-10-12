@@ -63,7 +63,8 @@ const Chat = () => {
 
   const chatsStyles = {
     position: 'relative',
-    height: 'calc(100vh - 57px)',
+    // height: 'calc(100vh - 57px)',
+    height: '100vh',
     display: 'grid',
     gridTemplateRows: 'max-content auto max-content',
   };

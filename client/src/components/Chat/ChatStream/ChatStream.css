@@ -3,8 +3,8 @@
   margin-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 17px;
-  overflow-y: scroll;
+  gap: 5px;
+  overflow-y: auto;
   scroll-behavior: smooth;
   z-index: 0;
 }
@@ -34,6 +34,11 @@
 .chat-msg__label {
   margin-right: 20px;
 }
+.chat-msg__name {
+  width: 50px;
+  font-size: 14px;
+  color: var(--black);
+}
 .chat-msg__avatar {
   margin-right: 15px;
 }
@@ -42,7 +47,7 @@
   align-items: center;
 }
 .chat-msg__main__user__name {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--black);
   margin-right: 4px;
 }
@@ -69,6 +74,6 @@
 }
 .chat-msg__time {
   font-size: 10px;
-  color: var(--black);
+  color: var(--secondary-gray);
   align-self: start;
 }

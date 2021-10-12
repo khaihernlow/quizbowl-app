@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Avatar from './../../Avatar/Avatar';
 import './ChatStream.css';
@@ -32,44 +32,68 @@ const ChatStream = ({ messages }) => {
     scrollToBottom();
   }, [messages]);
 
+  const messageStatus = [
+    {
+      type: 'chat',
+      color: 'var(--secondary-blue)',
+      icon: 'chat',
+    },
+    {
+      type: 'correct',
+      color: 'var(--green)',
+      icon: 'check',
+    },
+    {
+      type: 'incorrect',
+      color: 'var(--red)',
+      icon: 'clear',
+    },
+    {
+      type: 'question',
+      color: '#C4CBD0',
+      icon: 'help_center',
+    },
+  ];
+
   return (
     <div className="chat-stream">
       {messages.map((message, i) => (
-        <div key={i} className="chat-msg">
+        <div
+          key={i}
+          className="chat-msg"
+          style={{
+            marginTop: `${
+              (i !== 0 && messages[i - 1]?.messageStatus !== 'question') ||
+              (message.messageStatus !== 'question' && messages[i - 1]?.messageStatus === 'question')
+                ? '5px'
+                : null
+            }`,
+          }}
+        >
           <span
             className="material-icons-outlined chat-msg__label"
             style={{
-              color: `${
-                message.messageStatus === 'chat'
-                  ? 'var(--secondary-blue)'
-                  : message.messageStatus === 'correct'
-                  ? 'var(--green)'
-                  : message.messageStatus === 'incorrect'
-                  ? 'var(--red)'
-                  : message.messageStatus === 'question'
-                  ? '#C4CBD0'
-                  : 'var(--light-gray-3)'
-              }`,
+              color: `${messageStatus
+                .filter((msgStatus) => msgStatus.type === message.messageStatus)
+                .map((ele) => ele.color)}`,
             }}
           >
-            {message.messageStatus === 'chat'
-              ? 'chat'
-              : message.messageStatus === 'correct'
-              ? 'check'
-              : message.messageStatus === 'incorrect'
-              ? 'clear'
-              : message.messageStatus === 'question'
-              ? 'help_center'
-              : null}
+            {messageStatus.filter((msgStatus) => msgStatus.type === message.messageStatus).map((ele) => ele.icon)}
           </span>
-          <div className="chat-msg__avatar">
-            <Avatar size="40" letter={message.user.charAt(0).toUpperCase()} />
-          </div>
-          <div className="chat-msg__main">
-            <div className="chat-msg__main__user">
-              <h3 className="chat-msg__main__user__name">{message.user}</h3>
-              <h3 className="chat-msg__main__user__lvl">LVL 8</h3>
+          {message.messageStatus === 'question' ? (
+            <h3 className="chat-msg__name">Mod</h3>
+          ) : (
+            <div className="chat-msg__avatar">
+              <Avatar size="35" letter={message.user.charAt(0).toUpperCase()} />
             </div>
+          )}
+          <div className="chat-msg__main">
+            {message.messageStatus === 'question' ? null : (
+              <div className="chat-msg__main__user">
+                <h3 className="chat-msg__main__user__name">{message.user}</h3>
+                <h3 className="chat-msg__main__user__lvl">LVL 8</h3>
+              </div>
+            )}
             <h4 className="chat-msg__main__content">
               {message.messageStatus === 'question' ? <ReadMore textToDisplay={message.text} /> : message.text}
             </h4>
