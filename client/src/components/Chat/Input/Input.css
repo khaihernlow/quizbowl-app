@@ -21,6 +21,7 @@
   /* background-color: var(--light-gray-1); */
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 .chat-input__button__icon {
   font-size: 18px;
@@ -30,7 +31,17 @@
 .chat-input__button__label {
   color: var(--primary-blue);
   font-size: 12px;
-  cursor: pointer;
+}
+.chat-input input[type=radio]:disabled + label {
+  background-color: var(--light-gray-1);
+  border: 1px solid #b3b9c0;
+  cursor: not-allowed;
+}
+.chat-input input[type=radio]:disabled + label .chat-input__button__icon {
+  color: #b3b9c0;
+}
+.chat-input input[type=radio]:disabled + label .chat-input__button__label {
+  color: #b3b9c0;
 }
 .chat-input input[type=radio]:checked + label{
   background-color: var(--primary-blue);

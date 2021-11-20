@@ -4,7 +4,7 @@ let serverInstance = '';
 
 module.exports = (io) => {
   const { addUser, removeUser, getUser, addPoints } = require('./user');
-  const { getQuestion, getAnswer } = require('./question');
+  const { getQuestion, getAnswer, getRawAnswer } = require('./question');
 
   let questionEndTime = '';
   let buzzStartTime = '';
@@ -27,10 +27,13 @@ module.exports = (io) => {
       const decodedToken = jwt_decode(socket.handshake.query.token);
       username = decodedToken.username;
 
-      const { error, user } = addUser({ socketId: socket.id, username, room }, (userStats) => {
-        if (userStats) {
+      const { error, user } = addUser({ socketId: socket.id, username, room }, (userStats, allUsersStats) => {
+        if (userStats && allUsersStats) {
           socket.emit('userStats', {
             userStats,
+          });
+          io.to(user.room).emit('allUsersStats', {
+            allUsersStats,
           });
         }
       });
@@ -69,8 +72,8 @@ module.exports = (io) => {
       let question, answer;
 
       async function testRun() {
-        ({ question } = getQuestion());
-        ({ answer } = getAnswer());
+        ({ question } = await getQuestion());
+        ({ answers } = getAnswer());
         //console.log('❓: ' + question.text);
         //console.log('💬: ' + answer);
 
@@ -94,7 +97,7 @@ module.exports = (io) => {
 
         io.to(user.room).emit('message', {
           user: 'admin',
-          text: `${answer.toLowerCase()}&&&${question.text}`,
+          text: `${answers}&&&${question.text}`,
           messageStatus: 'question',
           timestamp: new Date(),
         });
@@ -113,12 +116,12 @@ module.exports = (io) => {
       let nulifyBuzz;
 
       socket.on('sendMessage', async (message, inputMode, callback) => {
-        let user = getUser(socket.id);
+        //let user = getUser(socket.id);
         let messageStatus;
 
-        ({ answer } = await getAnswer());
+        ({ answers } = await getRawAnswer());
 
-        console.log(answer);
+        console.log(answers);
 
         if (inputMode === 'buzz') {
           buzzInProgress = false;
@@ -127,12 +130,16 @@ module.exports = (io) => {
           //console.log('Message: ' + message);
           //console.log(message.toLowerCase() === answer.toLowerCase());
           // console.log('answer: ' + answer);
-          if (message.toLowerCase() === answer.toLowerCase()) {
+          let messageSample = message.toString().toUpperCase();
+          if (answers.includes(messageSample)) {
             messageStatus = 'correct';
             questionEndTime = new Date();
-            let userStats = addPoints(user, 'tossup');
+            let { userStats, allUsersStats } = addPoints(user, 'tossup');
             socket.emit('userStats', {
               userStats,
+            });
+            io.to(user.room).emit('allUsersStats', {
+              allUsersStats,
             });
           } else {
             messageStatus = 'incorrect';
@@ -153,7 +160,6 @@ module.exports = (io) => {
       });
 
       socket.on('requestBuzz', () => {
-        const user = getUser(socket.id);
         questionEndTime = new Date(questionEndTime).getTime() + 8000;
 
         buzzInProgress = true;
@@ -171,15 +177,13 @@ module.exports = (io) => {
       });
 
       socket.on('disconnect', () => {
-        const user = removeUser(socket.id);
-        if (user) {
-          io.to(user.room).emit('message', {
-            user: 'admin',
-            text: `${user.username} has left.`,
-            messageStatus: 'chat',
-            timestamp: new Date(),
-          });
-        }
+        removeUser(socket.id, user.username);
+        io.to(user.room).emit('message', {
+          user: 'admin',
+          text: `${user.username} has left.`,
+          messageStatus: 'chat',
+          timestamp: new Date(),
+        });
       });
 
       callback();

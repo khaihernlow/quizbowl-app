@@ -1,21 +1,18 @@
 .misc {
   border-left: 2px solid var(--light-gray-2);
-  padding: 10px 15px;
+  padding: 10px 7px 10px 15px;
   overflow-y: scroll;
   background-color: var(--white);
   z-index: 10;
 }
-.misc::-webkit-scrollbar,
-.misc__leaderboard__table__wrapper::-webkit-scrollbar {
+.misc::-webkit-scrollbar {
   width: 8px;
 }
-.misc::-webkit-scrollbar-track,
-.misc__leaderboard__table__wrapper::-webkit-scrollbar-track {
+.misc::-webkit-scrollbar-track {
   visibility: hidden;
   border: 2px solid transparent;
 }
-.misc::-webkit-scrollbar-thumb,
-.misc__leaderboard__table__wrapper::-webkit-scrollbar-thumb {
+.misc::-webkit-scrollbar-thumb {
   background-clip: padding-box;
   background-color: var(--secondary-gray);
   border-radius: 4px;
@@ -23,7 +20,7 @@
 }
 .misc__divider {
   margin: 20px 0;
-  border: 1px solid #e5e5e7;
+  border: 1px solid var(--light-gray-3);
 }
 .misc__heading {
   display: flex;
@@ -61,6 +58,10 @@
   font-size: 22px;
 }
 
+.misc__leaderboard__table__wrapper::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
+}
 .misc__content__leaderboard {
   border: 1px solid var(--light-gray-3);
   border-radius: 10px;
@@ -109,10 +110,13 @@
   align-items: center;
 }
 .misc__leaderboard__toggle__option {
+  height: 100%;
   font-size: 12px;
-  text-align: center;
   cursor: pointer;
   color: #b3b9c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .misc__leaderboard__toggle__option--active {
   color: var(--primary-blue);
@@ -122,6 +126,9 @@
 .misc__leaderboard__table__wrapper {
   overflow-y: auto;
   height: 180px;
+}
+.misc__leaderboard__table__wrapper thead {
+  filter: drop-shadow(0px 4px 4px rgba(53, 56, 65, 0.1));
 }
 .misc__leaderboard__table__wrapper thead th {
   position: sticky;
@@ -138,7 +145,6 @@
   color: var(--secondary-gray);
   text-align: left;
   background-color: var(--light-gray-1);
-  filter: drop-shadow(0px 4px 4px rgba(53, 56, 65, 0.1));
 }
 .misc__leaderboard__table tr:first-child td {
   padding-top: 10px;
@@ -150,6 +156,7 @@
   font-size: 10px;
   font-weight: 600;
   color: var(--primary-gray);
+  padding-left: 6px;
 }
 .misc__leaderboard__table__td__name {
   font-size: 12px;

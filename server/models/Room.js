@@ -13,7 +13,7 @@ const roomSchema = mongoose.Schema({
   announcement: {
     type: String,
   },
-  weeklyScores: {
+  roundScores: {
     type: Array,
     default: [],
   },

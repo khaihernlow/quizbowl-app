@@ -7,6 +7,7 @@ import './QuestionPanel.css';
 const QuestionPanel = ({ question, user, buzz, newMessage }) => {
   const [displayQuestion, setDisplayQuestion] = useState('');
   const [displayBuzz, setDisplayBuzz] = useState(false);
+  const [displayOptions, setDisplayOptions] = useState();
   const latestDisplayBuzz = useRef(displayBuzz);
 
   const [initialReadEndTimeDiff, setInitialReadEndTimeDiff] = useState();
@@ -149,6 +150,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
       let count = 0;
 
       async function questionReader() {
+        setDisplayOptions(null);
         if (count < splitStr.length) {
           setDisplayQuestion((prevDisplayQuestion) => setDisplayQuestion(`${prevDisplayQuestion} ${splitStr[count]}`));
           await new Promise((r) => setTimeout(r, 80));
@@ -167,6 +169,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
           questionReader();
         } else {
           // console.log(`Question Done! ${new Date().getTime()}`);
+          setDisplayOptions(question.options);
         }
       }
       if (count === 0) questionReader();
@@ -213,8 +216,12 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
                 {buzz?.user} Buzzed
               </motion.h2>
             )}
-            <motion.h3 className="chat-question__labels__tag" layout>{question?.category}</motion.h3>
-            <motion.h3 className="chat-question__labels__tag" layout>Hw-Chemistry</motion.h3>
+            <motion.h3 className="chat-question__labels__tag" layout>
+              {question?.category}
+            </motion.h3>
+            <motion.h3 className="chat-question__labels__tag" layout>
+              Hw-Chemistry
+            </motion.h3>
           </div>
           <div className="chat-question__bar">
             {displayBuzz ? (
@@ -264,8 +271,17 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
           or ∆Sº (read as: delta S naught), is positive or negative, respectively:
           1) decomposition of ammonium nitrate 2) sublimation of dry ice 3)
           condensation of gaseous iodine to liquid iodine */}
-            {displayQuestion}
+            {displayQuestion}&nbsp;&nbsp;
+            {displayOptions !== null && displayOptions !== undefined && question.options !== null && question.options !== undefined 
+              ? Object.keys(question.options).map((keyName, i) => (
+                  <span className="chat-question__option">
+                    <h3 className="chat-question__option__letter">{keyName}</h3>
+                    <h3 className="chat-question__option__text">{question.options[keyName]}&nbsp;&nbsp;&nbsp;</h3>
+                  </span>
+                ))
+              : null}
           </h4>
+
           <div className="chat-question__timer">
             <h3 className="chat-question__timer__read">{readTimeCountdown}s</h3>
             <h3 className="chat-question__timer__unread">{unreadTimeCountdown}s</h3>

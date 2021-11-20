@@ -1,17 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import useKeypress from '../../../hooks/useKeypress';
 import './Input.css';
+import { AuthContext } from '../../../contexts/auth';
 
 const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
+  const { user } = useContext(AuthContext);
   const [checked, setChecked] = useState();
   const [inputMode, setInputMode] = useState('');
   const [isEnterReset, setIsEnterReset] = useState(true);
   const latestIsEnterReset = useRef(isEnterReset);
   const inputRef = useRef();
-  
+
   let buzzRequested = false;
-  
+
   useKeypress(
     ' ',
     () => {
@@ -19,7 +21,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
       let buzzDetect;
 
       buzzDetect = setTimeout(() => {
-        if (inputMode === '' && latestIsEnterReset.current && buzzRequested === false) {
+        if (inputMode === '' && latestIsEnterReset.current && buzzRequested === false && Object.keys(buzz).length === 0) {
           setInputMode('buzz');
           requestBuzz();
           buzzRequested = true;
@@ -68,7 +70,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
       inputRef.current.blur();
       setMessage('');
     }
-  }, [buzz])
+  }, [buzz]);
 
   return (
     <div className="chat-input">
@@ -85,9 +87,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
         disabled={inputMode === 'buzz'}
       />
       <label htmlFor="chat" className="chat-input__button">
-        <span className="material-icons-outlined chat-input__button__icon">
-          chat
-        </span> 
+        <span className="material-icons-outlined chat-input__button__icon">chat</span>
         <h3 className="chat-input__button__label">Chat</h3>
       </label>
 
@@ -102,12 +102,10 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
           setIsEnterReset(false);
           requestBuzz();
         }}
-        disabled={inputMode === 'chat'}
+        disabled={inputMode === 'chat' || user.user !== buzz.user ? true : false}
       />
       <label htmlFor="buzz" className="chat-input__button">
-        <span className="material-icons-outlined chat-input__button__icon">
-          lightbulb
-        </span>
+        <span className="material-icons-outlined chat-input__button__icon">lightbulb</span>
         <h3 className="chat-input__button__label">Buzz</h3>
       </label>
 

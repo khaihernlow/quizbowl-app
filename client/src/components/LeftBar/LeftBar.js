@@ -62,7 +62,7 @@ const LeftBar = () => {
             <span className="leftBar__quickSelect__option__icon">
               <Avatar size="35" letter={user?.result?.username?.charAt(0).toUpperCase()} />
             </span>
-            <h3 className="leftBar__quickSelect__option__label">{user?.result?.username}</h3>
+            <h4 className="leftBar__quickSelect__option__label">{user?.result?.username}</h4>
             {dropdownOpen && (
               <div className="leftBar__avatar__dropdown">
                 <div className="leftBar__dropdown__item leftBar__dropdown__profile">
@@ -95,11 +95,26 @@ const LeftBar = () => {
         )}
         <div className="leftBar__quickSelect__option">
           <span className="material-icons-outlined leftBar__quickSelect__option__icon">settings</span>
-          <h3 className="leftBar__quickSelect__option__label">Settings</h3>
+          <h4 className="leftBar__quickSelect__option__label">Settings</h4>
         </div>
         <div className="leftBar__quickSelect__option">
           <span className="material-icons-outlined leftBar__quickSelect__option__icon">add_box</span>
-          <h3 className="leftBar__quickSelect__option__label">Create a Room</h3>
+          <h4 className="leftBar__quickSelect__option__label">Create a Room</h4>
+        </div>
+      </div>
+      <div className="leftBar__rooms">
+        <h3 className="leftBar__rooms__label">Rooms</h3>
+        <div className="leftBar__rooms__list">
+          <div className="leftBar__rooms__list__option">
+            <div className="leftBar__rooms__list__option__icon"></div>
+            <div className="leftBar__rooms__list__option__desc">
+              <h3 className="leftBar__rooms__list__option__desc__name">Science Bowl</h3>
+              <div className="leftBar__rooms__list__option__desc__status">
+                <span className="material-icons-outlined leftBar__rooms__list__option__desc__status__icon">public</span>
+                <h3 className="leftBar__rooms__list__option__desc__status__text">Public</h3>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

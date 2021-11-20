@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Avatar from '../Avatar/Avatar';
 import { SocketContext } from '../../contexts/socket';
 import { Skeleton } from '@mui/material';
@@ -8,12 +9,17 @@ import './Miscbar.css';
 const MiscBar = () => {
   const socket = useContext(SocketContext);
   const [userStats, setUserStats] = useState(null);
+  const [allUsersStats, setAllUsersStats] = useState(null);
   const [leaderboardMode, setLeaderboardMode] = useState('round');
 
   useEffect(() => {
     socket.on('userStats', (userStats) => {
-      // console.log(userStats);
+      console.log(userStats);
       setUserStats(userStats.userStats);
+    });
+    socket.on('allUsersStats', (allUsersStats) => {
+      setAllUsersStats(allUsersStats.allUsersStats);
+      console.log(allUsersStats.allUsersStats);
     });
   }, []);
 
@@ -90,14 +96,26 @@ const MiscBar = () => {
             <table className="misc__leaderboard__table">
               <thead>
                 <tr>
-                  <th></th>
+                  <th style={{ width: '8%' }}></th>
                   <th>Name</th>
                   <th>Neg</th>
                   <th>Points</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                {allUsersStats &&
+                  allUsersStats.map((user, i) => (
+                    <motion.tr layout>
+                      <td className="misc__leaderboard__table__td__rank">{i + 1}</td>
+                      <td className="misc__leaderboard__table__td__name">
+                        <Avatar size="25" letter={user.username.charAt(0).toUpperCase()} />
+                        {user.username}
+                      </td>
+                      <td className="misc__leaderboard__table__td__neg">2</td>
+                      <td className="misc__leaderboard__table__td__pts">{user.stats.sciencebowl.points}</td>
+                    </motion.tr>
+                  ))}
+                {/* <tr>
                   <td className="misc__leaderboard__table__td__rank">1</td>
                   <td className="misc__leaderboard__table__td__name">
                     <Avatar size="25" letter="K" />
@@ -141,7 +159,7 @@ const MiscBar = () => {
                   </td>
                   <td className="misc__leaderboard__table__td__neg">2</td>
                   <td className="misc__leaderboard__table__td__pts">1770</td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>
