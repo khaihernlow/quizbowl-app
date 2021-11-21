@@ -27,6 +27,9 @@ app.use(cors());
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send({ response: 'Quizbowl server is up and running.' }).status(200);
+});
 app.use('/user', userRoutes);
 app.use('/room', roomRoutes);
 
