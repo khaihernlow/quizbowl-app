@@ -220,7 +220,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
               {question?.category}
             </motion.h3>
             <motion.h3 className="chat-question__labels__tag" layout>
-              Hw-Chemistry
+              {question?.format}
             </motion.h3>
           </div>
           <div className="chat-question__bar">

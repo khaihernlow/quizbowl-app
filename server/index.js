@@ -18,7 +18,7 @@ const app = express();
 const server = http.createServer(app);
 corsOptions = {
   cors: true,
-  origins: ['http://localhost:3000', 'https://kh-socketio-chat.netlify.app//'],
+  origins: ['http://localhost:3000', 'https://kh-quizbowl.netlify.app//'],
 };
 const io = socketio(server, corsOptions);
 require('./socketio/chat')(io);

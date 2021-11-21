@@ -44,16 +44,23 @@ const Chat = () => {
     });
   }, []);
 
-  const sendMessage = (e, inputMode) => {
-    e.preventDefault();
-
+  const sendMessage = (e, inputMode, letterOption) => {
+    console.log(letterOption);
+    if (e !== null) {
+      e.preventDefault();
+      if (message || inputMode === 'buzz') {
+        socket.emit('sendMessage', message, inputMode, () => setMessage(''));
+      }
+    } else {
+      if (inputMode == 'buzz') {
+        socket.emit('sendMessage', letterOption, inputMode, () => setMessage(''));
+      }
+    }
     //if (inputMode === 'buzz') setBuzz({});
 
     //setMessage((prevMessage) => prevMessage.trim());
     //console.log(message);
-    if (message || inputMode === 'buzz') {
-      socket.emit('sendMessage', message, inputMode, () => setMessage(''));
-    }
+    
   };
 
   const requestBuzz = () => {
@@ -71,9 +78,16 @@ const Chat = () => {
 
   return (
     <div className="chats" style={chatsStyles}>
-      <QuestionPanel question={question} user={user} buzz={buzz} newMessage={newMessage}/>
+      <QuestionPanel question={question} user={user} buzz={buzz} newMessage={newMessage} />
       <ChatStream messages={messages} />
-      <Input message={message} setMessage={setMessage} sendMessage={sendMessage} requestBuzz={requestBuzz} buzz={buzz} />
+      <Input
+        message={message}
+        setMessage={setMessage}
+        sendMessage={sendMessage}
+        requestBuzz={requestBuzz}
+        buzz={buzz}
+        question={question}
+      />
     </div>
   );
 };

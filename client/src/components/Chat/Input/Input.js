@@ -4,7 +4,7 @@ import useKeypress from '../../../hooks/useKeypress';
 import './Input.css';
 import { AuthContext } from '../../../contexts/auth';
 
-const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
+const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }) => {
   const { user } = useContext(AuthContext);
   const [checked, setChecked] = useState();
   const [inputMode, setInputMode] = useState('');
@@ -13,6 +13,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
   const inputRef = useRef();
 
   let buzzRequested = false;
+  let letterOptions = ['w', 'x', 'y', 'z'];
 
   useKeypress(
     ' ',
@@ -21,11 +22,16 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
       let buzzDetect;
 
       buzzDetect = setTimeout(() => {
-        if (inputMode === '' && latestIsEnterReset.current && buzzRequested === false && Object.keys(buzz).length === 0) {
+        if (
+          inputMode === '' &&
+          latestIsEnterReset.current &&
+          buzzRequested === false &&
+          Object.keys(buzz).length === 0
+        ) {
           setInputMode('buzz');
           requestBuzz();
           buzzRequested = true;
-          inputRef.current.focus();
+          if (question.options == undefined || question.options == null) inputRef.current.focus();
           setIsEnterReset(false);
         }
       }, 0);
@@ -58,16 +64,16 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
     setChecked();
   }, [checked]);
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, [inputMode]);
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  // }, [inputMode]);
 
   useEffect(() => {
     if (Object.keys(buzz).length === 0) {
       console.log(buzz);
       setInputMode('');
       setIsEnterReset(true);
-      inputRef.current.blur();
+      if (question.options == undefined || question.options == null) inputRef.current.blur();
       setMessage('');
     }
   }, [buzz]);
@@ -109,24 +115,44 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz }) => {
         <h3 className="chat-input__button__label">Buzz</h3>
       </label>
 
-      <input
-        className="chat-input__msg"
-        placeholder="[ENTER] to Chat     [SPACE] to Buzz"
-        type="text"
-        ref={inputRef}
-        value={message}
-        onChange={({ target: { value } }) => setMessage(value)}
-        onKeyPress={(event) => {
-          if (event.key === 'Enter') {
-            //setMessage((message) => message.trim());
-            sendMessage(event, inputMode);
-            setInputMode('');
-            setChecked(false);
-            setIsEnterReset(true);
-          }
-        }}
-        disabled={!inputMode}
-      ></input>
+      {inputMode == 'buzz' && question.options !== undefined && question.options !== null ? (
+        <div className="chat-input__options">
+          {Object.keys(question.options).map((keyName, i) => (
+            <div
+              className="chat-input__option"
+              key={i}
+              onClick={() => {
+                sendMessage(null, inputMode, letterOptions[i]);
+                setInputMode('');
+                setChecked(false);
+                setIsEnterReset(true);
+              }}
+            >
+              <div className="chat-input__option__letter">{keyName.toUpperCase()}</div>
+              <div className="chat-input__option__text">{question.options[keyName]}</div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <input
+          className="chat-input__msg"
+          placeholder="[ENTER] to Chat     [SPACE] to Buzz"
+          type="text"
+          ref={inputRef}
+          value={message}
+          onChange={({ target: { value } }) => setMessage(value)}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+              //setMessage((message) => message.trim());
+              sendMessage(event, inputMode);
+              setInputMode('');
+              setChecked(false);
+              setIsEnterReset(true);
+            }
+          }}
+          disabled={!inputMode}
+        ></input>
+      )}
     </div>
   );
 };

@@ -73,7 +73,7 @@ module.exports = (io) => {
 
       async function testRun() {
         ({ question } = await getQuestion());
-        ({ answers } = getAnswer());
+        ({ formattedAnswers } = getAnswer());
         //console.log('❓: ' + question.text);
         //console.log('💬: ' + answer);
 
@@ -97,7 +97,7 @@ module.exports = (io) => {
 
         io.to(user.room).emit('message', {
           user: 'admin',
-          text: `${answers}&&&${question.text}`,
+          text: `${formattedAnswers}&&&${question.text}`,
           messageStatus: 'question',
           timestamp: new Date(),
         });
@@ -119,7 +119,7 @@ module.exports = (io) => {
         //let user = getUser(socket.id);
         let messageStatus;
 
-        ({ answers } = await getRawAnswer());
+        ({ answers, format } = await getRawAnswer());
 
         console.log(answers);
 
@@ -130,8 +130,16 @@ module.exports = (io) => {
           //console.log('Message: ' + message);
           //console.log(message.toLowerCase() === answer.toLowerCase());
           // console.log('answer: ' + answer);
-          let messageSample = message.toString().toUpperCase();
-          if (answers.includes(messageSample)) {
+          let messageSample;
+          if (format == 'Short Answer') {
+            messageSample = message.toString().toUpperCase();
+          } else if (format == 'Multiple Choice') {
+            messageSample = message.toString().toLowerCase();
+          }
+          if (
+            (format == 'Short Answer' && answers.includes(messageSample)) ||
+            (format == 'Multiple Choice' && messageSample == Object.keys(answers[0])[0])
+          ) {
             messageStatus = 'correct';
             questionEndTime = new Date();
             let { userStats, allUsersStats } = addPoints(user, 'tossup');

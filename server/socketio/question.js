@@ -82,27 +82,29 @@ const getQuestion = async () => {
     unreadEndTime: unreadEndTime,
     category: category,
     options: questions[counter].tossup_options,
+    format: questions[counter].tossup_format,
   };
 
   return { question };
 };
 
 const getAnswer = () => {
-  let answers = questions[counter].tossup_answers;
+  let formattedAnswers = questions[counter].tossup_answers;
 
   if (questions[counter].tossup_format == 'Multiple Choice') {
     console.log(questions[counter].tossup_answers);
-    let letter = Object.keys(answers[0])[0];
-    answers = `${letter.toUpperCase()} - ${answers[0][letter]}`;
+    let letter = Object.keys(formattedAnswers[0])[0];
+    formattedAnswers = `${letter.toUpperCase()} - ${formattedAnswers[0][letter]}`;
   } else if (questions[counter].tossup_format == 'Short Answer') {
-    answers = answers.join(', ');
+    formattedAnswers = formattedAnswers.join(', ');
   }
-  return { answers };
+  return { formattedAnswers };
 };
 
 const getRawAnswer = () => {
   let answers = questions[counter].tossup_answers;
-  return { answers };
+  let format = questions[counter].tossup_format;
+  return { answers, format };
 }
 
 module.exports = { getQuestion, getAnswer, getRawAnswer };
