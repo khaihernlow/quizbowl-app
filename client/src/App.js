@@ -14,6 +14,9 @@ function App() {
         <Route path="/auth" exact>
           <Auth />
         </Route>
+        <Route path="/" exact>
+          <h1>Welcome to Quizbowl!</h1>
+        </Route>
       </Switch>
     </BrowserRouter>
   );
