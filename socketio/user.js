@@ -29,6 +29,7 @@ cron.schedule('*/1 * * * *', () => {
 });
 
 const addUser = ({ socketId, username, room }, callback) => {
+  console.log(username);
   const existingUserLocal = users.find((user) => user.room === room && user.username === username);
   //const existingUserLocal = await User.findOne({ username });
   if (existingUserLocal) {

@@ -26,6 +26,16 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
+    let startTime, latency;
+    setInterval(function() {
+      startTime = Date.now();
+      socket.emit('ping');
+    }, 2000);
+    
+    socket.on('pong', function() {
+      latency = Date.now() - startTime;
+      console.log(`Ping: ${latency}ms`);
+    });
     socket.on('message', (message) => {
       setMessages((messages) => [...messages, message]);
 
@@ -60,7 +70,6 @@ const Chat = () => {
 
     //setMessage((prevMessage) => prevMessage.trim());
     //console.log(message);
-    
   };
 
   const requestBuzz = () => {

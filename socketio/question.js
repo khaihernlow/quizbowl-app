@@ -105,6 +105,6 @@ const getRawAnswer = () => {
   let answers = questions[counter].tossup_answers;
   let format = questions[counter].tossup_format;
   return { answers, format };
-}
+};
 
 module.exports = { getQuestion, getAnswer, getRawAnswer };

@@ -23,6 +23,10 @@ module.exports = (io) => {
     }
   }).on('connect', (socket) => {
     socket.on('join', ({ room }, callback) => {
+      socket.on('ping', () => {
+        socket.emit('pong');
+      });
+
       let username;
       const decodedToken = jwt_decode(socket.handshake.query.token);
       username = decodedToken.username;
@@ -71,20 +75,16 @@ module.exports = (io) => {
 
       let question, answer;
 
-      async function testRun() {
+      async function hostQuestion() {
         ({ question } = await getQuestion());
         ({ formattedAnswers } = getAnswer());
-        //console.log('❓: ' + question.text);
-        //console.log('💬: ' + answer);
 
         let timeDiff = new Date(question.unreadEndTime).getTime() - new Date();
-        //console.log('⌛: ' + timeDiff);
         io.to(user.room).emit('question', question);
 
         questionEndTime = new Date(question.unreadEndTime);
 
         // await new Promise((r) => setTimeout(r, timeDiff));
-
         await new Promise((res) => {
           setTimeout(function bar() {
             if (new Date() > new Date(questionEndTime)) {
@@ -102,23 +102,17 @@ module.exports = (io) => {
           timestamp: new Date(),
         });
 
-        //console.log('Question done');
-        //console.log('--------------------');
-
         await new Promise((r) => setTimeout(r, 2000));
-        testRun();
+        hostQuestion();
       }
 
       if (serverInstance === socket.id) {
-        testRun();
+        hostQuestion();
       }
 
       let nulifyBuzz;
-
       socket.on('sendMessage', async (message, inputMode, callback) => {
-        //let user = getUser(socket.id);
         let messageStatus;
-
         ({ answers, format } = await getRawAnswer());
 
         console.log(answers);

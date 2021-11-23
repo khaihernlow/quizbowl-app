@@ -86,7 +86,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }
         name="inputMode"
         value="chat"
         checked={checked || inputMode === 'chat'}
-        onClick={() => {
+        onChange={() => {
           setInputMode('chat');
           setIsEnterReset(false);
         }}
@@ -103,7 +103,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }
         name="inputMode"
         value="buzz"
         checked={checked || inputMode === 'buzz'}
-        onClick={() => {
+        onChange={() => {
           setInputMode('buzz');
           setIsEnterReset(false);
           requestBuzz();

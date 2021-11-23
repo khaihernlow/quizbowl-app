@@ -274,7 +274,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
             {displayQuestion}&nbsp;&nbsp;
             {displayOptions !== null && displayOptions !== undefined && question.options !== null && question.options !== undefined 
               ? Object.keys(question.options).map((keyName, i) => (
-                  <span className="chat-question__option">
+                  <span className="chat-question__option" key={i}>
                     <h3 className="chat-question__option__letter">{keyName}</h3>
                     <h3 className="chat-question__option__text">{question.options[keyName]}&nbsp;&nbsp;&nbsp;</h3>
                   </span>

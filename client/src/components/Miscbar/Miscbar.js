@@ -105,7 +105,7 @@ const MiscBar = () => {
               <tbody>
                 {allUsersStats &&
                   allUsersStats.map((user, i) => (
-                    <motion.tr layout>
+                    <motion.tr key={i} layout>
                       <td className="misc__leaderboard__table__td__rank">{i + 1}</td>
                       <td className="misc__leaderboard__table__td__name">
                         <Avatar size="25" letter={user.username.charAt(0).toUpperCase()} />
