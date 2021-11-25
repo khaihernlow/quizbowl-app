@@ -87,7 +87,7 @@ module.exports = (io) => {
         // await new Promise((r) => setTimeout(r, timeDiff));
         await new Promise((res) => {
           setTimeout(function bar() {
-            if (new Date() > new Date(new Date(questionEndTime) + 1000)) {
+            if (new Date() > new Date(new Date(questionEndTime).getTime() + 1000)) {
               res();
             } else {
               setTimeout(bar, 1);
