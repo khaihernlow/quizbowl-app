@@ -26,7 +26,7 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
-    let startTime, latency;
+    let startTime, latency, testTime;
     setInterval(function() {
       startTime = Date.now();
       socket.emit('ping');
@@ -34,9 +34,11 @@ const Chat = () => {
     
     socket.on('pong', function() {
       latency = Date.now() - startTime;
-      console.log(`Ping: ${latency}ms`);
+      // console.log(`Ping: ${latency}ms`);
     });
     socket.on('message', (message) => {
+      console.log('Current Time: ' + new Date());
+      console.log((((5.0 - (new Date(testTime).getTime() - new Date().getTime()) / 1000)) / 5.0) * 100);
       setMessages((messages) => [...messages, message]);
 
       if (message.messageStatus === 'correct' || message.messageStatus === 'incorrect') {
@@ -47,6 +49,8 @@ const Chat = () => {
       }
     });
     socket.on('question', (question) => {
+      testTime = new Date(question.unreadEndTime);
+      console.log('UnreadEndTime: ' + new Date(question.unreadEndTime));
       setQuestion(question);
     });
     socket.on('buzz', (buzz) => {

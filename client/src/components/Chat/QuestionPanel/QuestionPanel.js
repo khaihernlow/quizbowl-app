@@ -137,6 +137,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
             distance = distance.toFixed(1);
             if (distance > 0) {
               setUnreadTimeCountdown(`${distance}`);
+              
             } else {
               setUnreadTimeCountdown('0.0');
               clearInterval(unreadEndTime);
