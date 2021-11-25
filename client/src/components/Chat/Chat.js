@@ -54,7 +54,9 @@ const Chat = () => {
       setQuestion(question);
     });
     socket.on('buzz', (buzz) => {
+      console.log('BuzzEndTime: ' + new Date(buzz.buzzEndTime));
       setBuzz(buzz);
+      console.log('Current Time: ' + new Date());
     });
   }, []);
 

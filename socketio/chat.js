@@ -162,7 +162,7 @@ module.exports = (io) => {
       });
 
       socket.on('requestBuzz', () => {
-        questionEndTime = new Date(questionEndTime).getTime() + 8000;
+        questionEndTime = new Date(questionEndTime).getTime() + 9000;
 
         buzzInProgress = true;
         buzzStartTime = new Date();
@@ -170,7 +170,7 @@ module.exports = (io) => {
           if (buzzInProgress) {
             io.to(user.room).emit('buzz', {});
           }
-        }, 8000);
+        }, 9000);
 
         io.to(user.room).emit('buzz', {
           buzzEndTime: new Date(new Date().getTime() + 8000),

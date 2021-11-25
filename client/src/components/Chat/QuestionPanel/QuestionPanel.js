@@ -79,10 +79,12 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
         } else {
           setBuzzTimeCountdown('0.0');
           clearInterval(buzzEndTime);
-          setDisplayBuzz(false);
         }
       }, 1);
     } else {
+      if (Object.keys(buzz).length == 0) {
+        setDisplayBuzz(false);
+      }
       if (Object.keys(question).length !== 0) {
         clearInterval(buzzEndTime);
         setDisplayBuzz(false);
