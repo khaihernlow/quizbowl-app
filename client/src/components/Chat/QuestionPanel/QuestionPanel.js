@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CircularProgress } from '@material-ui/core';
+import useInterval from '../../../hooks/useInterval';
 
 import './QuestionPanel.css';
 
@@ -9,6 +10,7 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
   const [displayBuzz, setDisplayBuzz] = useState(false);
   const [displayOptions, setDisplayOptions] = useState();
   const latestDisplayBuzz = useRef(displayBuzz);
+  const [rerenderBuzz, setRerenderBuzz] = useState(false);
 
   const [initialReadEndTimeDiff, setInitialReadEndTimeDiff] = useState();
   const [readTimeCountdown, setReadTimeCountdown] = useState('');
@@ -70,23 +72,11 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
       let x = new Date(new Date(question.unreadEndTime).getTime() + 8000);
       question.readEndTime = new Date(new Date(question.readEndTime).getTime() + 8000);
       question.unreadEndTime = x;
-
-      buzzEndTime = setInterval(() => {
-        let distance = (new Date(buzz.buzzEndTime).getTime() - new Date().getTime()) / 1000;
-        distance = distance.toFixed(1);
-        if (distance > 0) {
-          setBuzzTimeCountdown(`${distance}`);
-        } else {
-          setBuzzTimeCountdown('0.0');
-          clearInterval(buzzEndTime);
-        }
-      }, 1);
+      setRerenderBuzz(true);
     } else {
-      if (Object.keys(buzz).length == 0) {
-        setDisplayBuzz(false);
-      }
+      setDisplayBuzz(false);
       if (Object.keys(question).length !== 0) {
-        clearInterval(buzzEndTime);
+        setRerenderBuzz(false);
         setDisplayBuzz(false);
         question.readEndTime = new Date(new Date(question.readEndTime) - (new Date(initialBuzzEndTime) - new Date()));
 
@@ -94,9 +84,21 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
         question.unreadEndTime = z;
       }
     }
-
-    return () => clearInterval(buzzEndTime);
   }, [buzz]);
+
+  useInterval(
+    () => {
+      let distance = (new Date(buzz.buzzEndTime).getTime() - new Date().getTime()) / 1000;
+      distance = distance.toFixed(1);
+      if (distance > 0) {
+        setBuzzTimeCountdown(`${distance}`);
+      } else {
+        setBuzzTimeCountdown('0.0');
+        setRerenderBuzz(false);
+      }
+    },
+    rerenderBuzz == true ? 100 : null
+  );
 
   useEffect(() => {
     if (Object.keys(question).length !== 0) {
@@ -114,41 +116,13 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
     setUnreadTimeCountdown('5.0');
     setShowUnreadBar(false);
 
-    let readEndTime, unreadEndTime;
-
     if (!preStart) setConnecting(false);
 
     if (Object.keys(question).length !== 0) {
       setInitialReadEndTimeDiff((new Date(question.readEndTime).getTime() - new Date().getTime()) / 1000);
+      setReadState('read');
 
-      readEndTime = setInterval(() => {
-        setReadState('read');
-        let distance = (new Date(question.readEndTime).getTime() - new Date().getTime()) / 1000;
-        distance = distance.toFixed(1);
-        if (distance > 0) {
-          setReadTimeCountdown(`${distance}`);
-        } else {
-          // console.log(`Time Done! ${new Date()}`);
-          setReadTimeCountdown('0.0');
-          clearInterval(readEndTime);
-
-          unreadEndTime = setInterval(() => {
-            setReadState('unread');
-            setShowUnreadBar(true);
-            let distance = (new Date(question.unreadEndTime).getTime() - new Date().getTime()) / 1000;
-            distance = distance.toFixed(1);
-            if (distance > 0) {
-              setUnreadTimeCountdown(`${distance}`);
-              
-            } else {
-              setUnreadTimeCountdown('0.0');
-              clearInterval(unreadEndTime);
-            }
-          }, 1);
-        }
-      }, 1);
-
-      // console.log(question.text.split(/\r\n|\r|\n/).length);
+      console.log(question.text.split(/\r\n|\r|\n/).length);
       let splitStr = question.text.split(' ');
       let count = 0;
 
@@ -177,12 +151,37 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
       }
       if (count === 0) questionReader();
     }
-
-    return () => {
-      clearInterval(readEndTime);
-      clearInterval(unreadEndTime);
-    };
   }, [question, latestDisplayBuzz]);
+
+  useInterval(
+    () => {
+      let distance = (new Date(question.readEndTime).getTime() - new Date().getTime()) / 1000;
+      distance = distance.toFixed(1);
+      if (distance > 0) {
+        setReadTimeCountdown(`${distance}`);
+      } else {
+        // console.log(`Time Done! ${new Date()}`);
+        setReadTimeCountdown('0.0');
+        setReadState('unread');
+      }
+    },
+    readState == 'read' ? 100 : null
+  );
+
+  useInterval(
+    () => {
+      setShowUnreadBar(true);
+      let distance = (new Date(question.unreadEndTime).getTime() - new Date().getTime()) / 1000;
+      distance = distance.toFixed(1);
+      if (distance > 0) {
+        setUnreadTimeCountdown(`${distance}`);
+      } else {
+        setUnreadTimeCountdown('0.0');
+        setReadState('');
+      }
+    },
+    readState == 'unread' ? 100 : null
+  );
 
   return (
     <div className="chat-question">
@@ -275,7 +274,10 @@ const QuestionPanel = ({ question, user, buzz, newMessage }) => {
           1) decomposition of ammonium nitrate 2) sublimation of dry ice 3)
           condensation of gaseous iodine to liquid iodine */}
             {displayQuestion}&nbsp;&nbsp;
-            {displayOptions !== null && displayOptions !== undefined && question.options !== null && question.options !== undefined 
+            {displayOptions !== null &&
+            displayOptions !== undefined &&
+            question.options !== null &&
+            question.options !== undefined
               ? Object.keys(question.options).map((keyName, i) => (
                   <span className="chat-question__option" key={i}>
                     <h3 className="chat-question__option__letter">{keyName}</h3>
