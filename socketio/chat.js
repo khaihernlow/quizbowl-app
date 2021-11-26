@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const jwt_decode = require('jwt-decode');
 let serverInstance = '';
+let buzzer = ''
 
 module.exports = (io) => {
   const { addUser, removeUser, getUser, addPoints } = require('./user');
@@ -119,6 +120,7 @@ module.exports = (io) => {
 
         if (inputMode === 'buzz') {
           buzzInProgress = false;
+          buzzer = '';
           clearTimeout(nulifyBuzz);
           // io.to(user.room).emit('buzz', {});
           //console.log('Message: ' + message);
@@ -162,12 +164,15 @@ module.exports = (io) => {
       });
 
       socket.on('requestBuzz', () => {
+        if (buzzer !== '') return;
+        buzzer = user.username;
         questionEndTime = new Date(questionEndTime).getTime() + 9000;
 
         buzzInProgress = true;
         buzzStartTime = new Date();
         nulifyBuzz = setTimeout(() => {
           if (buzzInProgress) {
+            buzzer = '';
             io.to(user.room).emit('buzz', {});
           }
         }, 9000);
