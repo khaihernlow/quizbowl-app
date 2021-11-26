@@ -166,6 +166,7 @@ module.exports = (io) => {
       socket.on('requestBuzz', () => {
         if (buzzer !== '') return;
         buzzer = user.username;
+        console.log(buzzer);
         questionEndTime = new Date(questionEndTime).getTime() + 9000;
 
         buzzInProgress = true;
