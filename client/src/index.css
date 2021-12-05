@@ -47,3 +47,8 @@ h4 {
 .link-style {
   text-decoration: none;
 }
+
+.modal {
+  position: relative;
+  z-index: 100;
+}

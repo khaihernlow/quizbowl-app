@@ -3,6 +3,7 @@ import Chat from '../../components/Chat/Chat';
 import Miscbar from '../../components/Miscbar/Miscbar';
 import Navbar from '../../components/Navbar/Navbar';
 import Rooms from '../../components/LeftBar/LeftBar';
+import RoundSummary from '../../components/RoundSummary/RoundSummary';
 import { useParams } from 'react-router';
 
 import './Game.css';
@@ -24,6 +25,7 @@ const Game = () => {
   return (
     <>
       {/* <Navbar /> */}
+      <RoundSummary />
       <div className="main-container">
         <Rooms />
         <Chat />

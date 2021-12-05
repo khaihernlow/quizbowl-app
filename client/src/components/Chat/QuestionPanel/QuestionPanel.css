@@ -19,7 +19,7 @@
   grid-gap: 5px;
 }
 .chat-question__labels__tag {
-  background-color: #EDF1F4;
+  background-color: #edf1f4;
   border-radius: 5px;
   font-size: 11px;
   padding: 1.5px 5px;
@@ -65,7 +65,7 @@
   font-size: 14px;
   color: var(--black);
   overflow-y: auto;
-  height: calc(21px * 2)
+  height: calc(21px * 2);
 }
 .chat-question__text::-webkit-scrollbar {
   width: 12px;
@@ -154,7 +154,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: #E1EDFF;
+  background-color: #e1edff;
   color: var(--primary-blue);
   border-radius: 4px;
   padding: 5px;
@@ -172,7 +172,8 @@
   align-items: center;
   gap: 8px;
 }
-.chat-question__prestart__btn__guide, .chat-question__prestart__btn__start {
+.chat-question__prestart__btn__guide,
+.chat-question__prestart__btn__start {
   display: flex;
   align-items: center;
   padding: 5px 10px;
@@ -182,7 +183,7 @@
   cursor: pointer;
 }
 .chat-question__prestart__btn__guide {
-  background-color: #E1EDFF;
+  background-color: #e1edff;
   color: var(--primary-blue);
 }
 .chat-question__prestart__btn__start {

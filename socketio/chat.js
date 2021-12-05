@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const jwt_decode = require('jwt-decode');
 let serverInstance = '';
-let buzzer = ''
+let buzzer = '';
 
 module.exports = (io) => {
   const { addUser, removeUser, getUser, addPoints } = require('./user');
@@ -74,7 +74,9 @@ module.exports = (io) => {
       //   runRun();
       // }
 
-      let question, answer;
+      let question,
+        answer,
+        questionNumber = 0;
 
       async function hostQuestion() {
         ({ question } = await getQuestion());
@@ -82,6 +84,7 @@ module.exports = (io) => {
 
         let timeDiff = new Date(question.unreadEndTime).getTime() - new Date();
         io.to(user.room).emit('question', question);
+        questionNumber += 1;
 
         questionEndTime = new Date(question.unreadEndTime);
 
@@ -104,7 +107,15 @@ module.exports = (io) => {
         });
 
         await new Promise((r) => setTimeout(r, 2000));
-        hostQuestion();
+
+        if (questionNumber >= 3) {
+          io.to(user.room).emit('roundEnd', {
+            startTime: new Date(new Date().getTime() + 20000),
+          });
+          questionNumber = 0;
+        } else {
+          hostQuestion();
+        }
       }
 
       if (serverInstance === socket.id) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API = axios.create({ baseURL: 'http://localhost:8000/' }); //localhost
-const API = axios.create({ baseURL: 'https://kh-quizbowl.herokuapp.com/' });
+const API = axios.create({ baseURL: 'http://localhost:8000/' }); //localhost
+// const API = axios.create({ baseURL: 'https://kh-quizbowl.herokuapp.com/' });
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {

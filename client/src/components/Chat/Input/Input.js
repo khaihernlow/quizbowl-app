@@ -43,6 +43,9 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }
 
   useEffect(() => {
     buzzRequested = false;
+    if (user.user == buzz.user) {
+        
+    }
   }, [buzz]);
 
   useKeypress(
