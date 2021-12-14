@@ -1,5 +1,9 @@
 let counter = 0;
 let tossup_question = '';
+let formattedAnswers;
+let answers = [];
+let format = '';
+const random = require('mongoose-simple-random');
 const Question = require('../models/Question.js');
 
 // const questions = [
@@ -47,36 +51,33 @@ let questions;
 //   });
 
 const fetchQuestionsFromDB = async () => {
-  questions = await Question.find().sort({ $natural: 1 }).limit(10);
+  //questions = await Question.find().sort({ $natural: 1 }).limit(10);
+  const promise1 = new Promise((resolve, reject) => {
+    Question.findRandom({}, {}, { limit: 10 }, function (err, results) {
+      if (!err) {
+        questions = results;
+        resolve(questions);
+      } else {
+        reject(err);
+      }
+    });
+  });
+  await promise1;
+  counter = -1;
+  return;
 };
 
 const getQuestion = async () => {
-  if (questions == null) {
-    await fetchQuestionsFromDB();
-  }
+  counter += 1;
   let now = new Date();
 
-  // const questions = [
-  //   'What is the metric unit for mass?',
-  //   'What is the most common term used in genetics to describe the observable physical characteristics of an organism caused by the expression of a gene or set of genes?',
-  //   'An aqueous solution in which the concentration of OH- ions is greater than that of H+ ions is:\nW) basic\nX) acidic\nY) neutral\nZ) in equilibrium',
-  //   'What property of a sound wave is most commonly associated with loudness?',
-  //   'What term BEST describes 2 angles with 90\u00b0 as the sum of their measurements?',
-  // ];
-
-  // const tossup_question = 'The overall charge at the top and bottom, respectively, of a towering cumulonimbus cloud during a thunderstorm is:\nW) positive, positive\nX) positive, negative\nY) negative, positive\nZ) negative, negative';
-  if (counter === questions.length - 1) {
-    counter = 0;
-  } else {
-    counter += 1;
-  }
   tossup_question = questions[counter].tossup_question;
   category = questions[counter].category;
 
   const readEndTime = new Date(now.getTime() + 80 * tossup_question.split(' ').length);
   const unreadEndTime = new Date(readEndTime.getTime() + 5000);
 
-  const question = {
+  question = {
     text: tossup_question,
     readEndTime: readEndTime,
     unreadEndTime: unreadEndTime,
@@ -89,7 +90,7 @@ const getQuestion = async () => {
 };
 
 const getAnswer = () => {
-  let formattedAnswers = questions[counter].tossup_answers;
+  formattedAnswers = questions[counter].tossup_answers;
 
   if (questions[counter].tossup_format == 'Multiple Choice') {
     console.log(questions[counter].tossup_answers);
@@ -102,9 +103,13 @@ const getAnswer = () => {
 };
 
 const getRawAnswer = () => {
-  let answers = questions[counter].tossup_answers;
-  let format = questions[counter].tossup_format;
+  answers = questions[counter].tossup_answers;
+  format = questions[counter].tossup_format;
   return { answers, format };
 };
 
-module.exports = { getQuestion, getAnswer, getRawAnswer };
+const getQuestionInfo = () => {
+  return { tossup_question, formattedAnswers };
+};
+
+module.exports = { fetchQuestionsFromDB, getQuestion, getAnswer, getRawAnswer, getQuestionInfo };

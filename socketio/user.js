@@ -4,6 +4,10 @@ const User = require('../models/User.js');
 let users = [];
 let rankedUsers = [];
 
+const getAllConnectedUsers = () => {
+  return users;
+}
+
 const getAllRankedUsers = (callback) => {
   User.find({ 'stats.sciencebowl.points': { $gt: 0 } }, 'username stats.sciencebowl.points -_id', (err, docs) => {
     if (err) console.log(err);
@@ -81,4 +85,4 @@ const addPoints = (user, typeOfQuestion) => {
 
 const getUser = (socketId) => users.find((user) => user.socketId === socketId);
 
-module.exports = { addUser, removeUser, getUser, addPoints };
+module.exports = { getAllConnectedUsers, addUser, removeUser, getUser, addPoints };

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const random = require('mongoose-simple-random');
 
 const questionSchema = mongoose.Schema({
   id: {
@@ -47,5 +48,6 @@ const questionSchema = mongoose.Schema({
     type: Array,
   },
 });
+questionSchema.plugin(random);
 
 module.exports = mongoose.model('Question', questionSchema);

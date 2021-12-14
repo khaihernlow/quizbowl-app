@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { StatsContextProvider } from './contexts/stats';
 
 import Auth from './pages/Auth/Auth';
 import Game from './pages/Game/Game';
@@ -21,5 +22,5 @@ function App() {
     </BrowserRouter>
   );
 }
-  
+
 export default App;

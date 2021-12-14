@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 
 import './Game.css';
 import * as api from '../../api/index.js';
+import { StatsContextProvider } from '../../contexts/stats';
 
 const Game = () => {
   const [room, setRoom] = useState({});
@@ -18,19 +19,21 @@ const Game = () => {
       const { data } = await api.getRoom(roomID);
       console.log(data);
       setRoom({ ...room, room: data });
-    }
+    };
     getRoom();
   }, [roomID]);
 
   return (
     <>
       {/* <Navbar /> */}
-      <RoundSummary />
-      <div className="main-container">
-        <Rooms />
-        <Chat />
-        <Miscbar />
-      </div>
+      <StatsContextProvider>
+        <RoundSummary />
+        <div className="main-container">
+          <Rooms />
+          <Chat />
+          <Miscbar />
+        </div>
+      </StatsContextProvider>
     </>
   );
 };

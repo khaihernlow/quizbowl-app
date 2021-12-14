@@ -4,7 +4,7 @@ import useKeypress from '../../../hooks/useKeypress';
 import './Input.css';
 import { AuthContext } from '../../../contexts/auth';
 
-const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }) => {
+const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question, lockBuzz }) => {
   const { user } = useContext(AuthContext);
   const [checked, setChecked] = useState();
   const [inputMode, setInputMode] = useState('');
@@ -26,7 +26,8 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }
           inputMode === '' &&
           latestIsEnterReset.current &&
           buzzRequested === false &&
-          Object.keys(buzz).length === 0
+          Object.keys(buzz).length === 0 &&
+          !lockBuzz
         ) {
           setInputMode('buzz');
           requestBuzz();
@@ -44,7 +45,6 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }
   useEffect(() => {
     buzzRequested = false;
     if (user.user == buzz.user) {
-        
     }
   }, [buzz]);
 
@@ -111,7 +111,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question }
           setIsEnterReset(false);
           requestBuzz();
         }}
-        disabled={inputMode === 'chat' || user.user !== buzz.user ? true : false}
+        disabled={inputMode === 'chat' || user.user !== buzz.user || lockBuzz ? true : false}
       />
       <label htmlFor="buzz" className="chat-input__button">
         <span className="material-icons-outlined chat-input__button__icon">lightbulb</span>

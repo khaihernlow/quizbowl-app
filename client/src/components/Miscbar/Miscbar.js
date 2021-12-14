@@ -11,6 +11,8 @@ const MiscBar = () => {
   const [userStats, setUserStats] = useState(null);
   const [allUsersStats, setAllUsersStats] = useState(null);
   const [leaderboardMode, setLeaderboardMode] = useState('round');
+  const [question, setQuestion] = useState(null);
+  const [roundStatus, setRoundStatus] = useState('live');
 
   useEffect(() => {
     socket.on('userStats', (userStats) => {
@@ -20,6 +22,15 @@ const MiscBar = () => {
     socket.on('allUsersStats', (allUsersStats) => {
       setAllUsersStats(allUsersStats.allUsersStats);
       console.log(allUsersStats.allUsersStats);
+    });
+    socket.on('question', (question) => {
+      setQuestion(question);
+    });
+    socket.on('roundEnd', (roundStatus) => {
+      setRoundStatus('break');
+    });
+    socket.on('roundStart', () => {
+      setRoundStatus('live');
     });
   }, []);
 
@@ -66,11 +77,18 @@ const MiscBar = () => {
         <div className="misc__content__leaderboard">
           <div className="misc__leaderboard__round">
             <h3 className="misc__leaderboard__round__desc">FFA Round</h3>
-            <h2 className="misc__leaderboard__round__status">LIVE</h2>
+            <h2
+              className="misc__leaderboard__round__status"
+              style={{ display: `${roundStatus == 'live' ? 'block' : 'none'}` }}
+            >
+              LIVE
+            </h2>
           </div>
 
           <div className="misc__leaderboard__stats">
-            <h2 className="misc__leaderboard__stats__text">Question: 3/24</h2>
+            <h2 className="misc__leaderboard__stats__text">
+              Question: {question !== null ? question.questionNumber : ''}/10
+            </h2>
           </div>
 
           <div className="misc__leaderboard__toggle">

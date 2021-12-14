@@ -1,18 +1,51 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { AuthContext } from '../../contexts/auth';
 import { SocketContext } from '../../contexts/socket';
+import { StatsContext } from '../../contexts/stats';
 
 import './RoundSummary.css';
 import backgroundShapes from './backgroundShapes.png';
 import useInterval from '../../hooks/useInterval';
 
 const RoundSummary = () => {
+  const { user } = useContext(AuthContext);
   const socket = useContext(SocketContext);
+  const { roundQuestions, setRQuestion } = useContext(StatsContext);
   const [displaySummary, setDisplaySummary] = useState(false);
   const [roundEnd, setRoundEnd] = useState();
   const [roundStartCountdown, setRoundStartCountdown] = useState();
   const [countdownState, setCountdownState] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const roundStats = {
+    total: roundQuestions.length,
+    correct: roundQuestions.filter((obj) => obj.status === 'correct').length,
+    incorrect: roundQuestions.filter((obj) => obj.status === 'incorrect').length,
+    unattempted: roundQuestions.filter((obj) => obj.status === 'unattempted').length,
+  };
+
+  const calcPercentage = (num) => {
+    return `${(num / roundStats.total) * 100}%`;
+  };
+
+  const questionStatusFormat = [
+    {
+      type: 'correct',
+      color: 'var(--green)',
+      icon: 'check',
+    },
+    {
+      type: 'incorrect',
+      color: 'var(--red)',
+      icon: 'clear',
+    },
+    {
+      type: 'unattempted',
+      color: 'var(--secondary-gray)',
+      icon: 'clear',
+    },
+  ];
 
   const dropIn = {
     hidden: {
@@ -46,6 +79,12 @@ const RoundSummary = () => {
       setCountdownState(true);
       open();
     });
+    socket.on('roundStart', () => {
+      console.log('Round Started 🏁');
+      setDisplaySummary(false);
+      setCountdownState(false);
+      close();
+    });
   }, []);
 
   useInterval(
@@ -76,17 +115,68 @@ const RoundSummary = () => {
           <div className="roundSummary">
             <div className="roundSummary__header">
               <div className="roundSummary__header__left">
-                <h2 className="roundSummary__header__left__greeting">Nice work, khaihern!</h2>
+                <h2 className="roundSummary__header__left__greeting">Nice work, {user?.result?.username}!</h2>
                 <h2 className="roundSummary__header__left__summary__text">Summary</h2>
-                <div className="roundSummary__header__left__summary__bar">
-                  <div className="roundSummary__header__left__summary__bar__tooltip roundSummary__header__left__summary__bar__correct">
-                    <h2 className="roundSummary__header__left__summary__bar__tooltiptext">12/20</h2>
+                <div
+                  className="roundSummary__header__left__summary__bar"
+                  style={{
+                    gridTemplateColumns: `${calcPercentage(roundStats.correct)} ${calcPercentage(
+                      roundStats.incorrect
+                    )} ${calcPercentage(roundStats.unattempted)}`,
+                  }}
+                >
+                  <div
+                    className="roundSummary__header__left__summary__bar__tooltip roundSummary__header__left__summary__bar__correct"
+                    style={{
+                      borderRadius: `${
+                        roundStats.incorrect === 0 && roundStats.unattempted === 0
+                          ? '50px 50px 50px 50px'
+                          : '50px 0 0 50px'
+                      }`,
+                    }}
+                  >
+                    <h2
+                      className="roundSummary__header__left__summary__bar__tooltiptext"
+                      style={{ display: `${roundStats.correct === 0 ? 'none' : 'block'}` }}
+                    >
+                      {roundStats.correct}/{roundStats.total}
+                    </h2>
                   </div>
-                  <div className="roundSummary__header__left__summary__bar__tooltip roundSummary__header__left__summary__bar__incorrect">
-                    <h2 className="roundSummary__header__left__summary__bar__tooltiptext">4/20</h2>
+                  <div
+                    className="roundSummary__header__left__summary__bar__tooltip roundSummary__header__left__summary__bar__incorrect"
+                    style={{
+                      borderRadius: `${
+                        roundStats.correct === 0 && roundStats.unattempted === 0
+                          ? '50px 50px 50px 50px'
+                          : roundStats.correct === 0
+                          ? '50px 0 0 50px'
+                          : roundStats.unattempted === 0
+                          ? '0 50px 50px 0'
+                          : '0 0 0 0'
+                      }`,
+                    }}
+                  >
+                    <h2
+                      className="roundSummary__header__left__summary__bar__tooltiptext"
+                      style={{ display: `${roundStats.incorrect === 0 ? 'none' : 'block'}` }}
+                    >
+                      {roundStats.incorrect}/{roundStats.total}
+                    </h2>
                   </div>
-                  <div className="roundSummary__header__left__summary__bar__tooltip roundSummary__header__left__summary__bar__unattempted">
-                    <h2 className="roundSummary__header__left__summary__bar__tooltiptext">3/20</h2>
+                  <div
+                    className="roundSummary__header__left__summary__bar__tooltip roundSummary__header__left__summary__bar__unattempted"
+                    style={{
+                      borderRadius: `${
+                        roundStats.correct === 0 && roundStats.incorrect === 0 ? '50px 50px 50px 50px' : '0 50px 50px 0'
+                      }`,
+                    }}
+                  >
+                    <h2
+                      className="roundSummary__header__left__summary__bar__tooltiptext"
+                      style={{ display: `${roundStats.unattempted === 0 ? 'none' : 'block'}` }}
+                    >
+                      {roundStats.unattempted}/{roundStats.total}
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -121,44 +211,27 @@ const RoundSummary = () => {
               <div className="roundSummary__questionsReview">
                 <h3 className="roundSummary__sectionHeading">Questions in this round</h3>
                 <div className="roundSummary__questionsReview__questions">
-                  <div className="roundSummary__questionsReview__question">
-                    <h4 className="roundSummary__questionsReview__question__text">
-                      What is the most common term used in genetics to describe the observable physical characteristics
-                      of an organism caused by the expression of a gene or set of genes?
-                    </h4>
-                    <h4 className="roundSummary__questionsReview__question__answer">Answer: Phenotype</h4>
-                    <div className="roundSummary__questionsReview__question__toolbar">
-                      <span className="material-icons-outlined roundSummary__questionsReview__question__toolbar__validity">
-                        check
-                      </span>
+                  {roundQuestions.map((el) => (
+                    <div className="roundSummary__questionsReview__question">
+                      <h4 className="roundSummary__questionsReview__question__text">{el.question}</h4>
+                      <h4 className="roundSummary__questionsReview__question__answer">
+                        Answer: {el.answer} <br />
+                        {el['user_answer'] !== null ? `Your Answer: ${el.user_answer}` : ''}
+                      </h4>
+                      <div className="roundSummary__questionsReview__question__toolbar">
+                        <span
+                          className="material-icons-outlined roundSummary__questionsReview__question__toolbar__validity"
+                          style={{
+                            color: `${questionStatusFormat
+                              .filter((ele) => ele.type === el.status)
+                              .map((ele) => ele.color)}`,
+                          }}
+                        >
+                          {questionStatusFormat.filter((ele) => ele.type === el.status).map((ele) => ele.icon)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="roundSummary__questionsReview__question">
-                    <h4 className="roundSummary__questionsReview__question__text">
-                      What is the most common term used in genetics to describe the observable physical characteristics
-                      of an organism caused by the expression of a gene or set of genes?
-                    </h4>
-                    <h4 className="roundSummary__questionsReview__question__answer">Answer: Phenotype</h4>
-                    <div className="roundSummary__questionsReview__question__toolbar">
-                      <span className="material-icons-outlined roundSummary__questionsReview__question__toolbar__validity">
-                        check
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="roundSummary__questionsReview__question">
-                    <h4 className="roundSummary__questionsReview__question__text">
-                      What is the most common term used in genetics to describe the observable physical characteristics
-                      of an organism caused by the expression of a gene or set of genes?
-                    </h4>
-                    <h4 className="roundSummary__questionsReview__question__answer">Answer: Phenotype</h4>
-                    <div className="roundSummary__questionsReview__question__toolbar">
-                      <span className="material-icons-outlined roundSummary__questionsReview__question__toolbar__validity">
-                        check
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>

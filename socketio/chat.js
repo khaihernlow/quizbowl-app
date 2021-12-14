@@ -4,12 +4,14 @@ let serverInstance = '';
 let buzzer = '';
 
 module.exports = (io) => {
-  const { addUser, removeUser, getUser, addPoints } = require('./user');
-  const { getQuestion, getAnswer, getRawAnswer } = require('./question');
+  const { getAllConnectedUsers, addUser, removeUser, getUser, addPoints } = require('./user');
+  const { getQuestion, getAnswer, getRawAnswer, getQuestionInfo, fetchQuestionsFromDB } = require('./question');
 
   let questionEndTime = '';
   let buzzStartTime = '';
   let buzzInProgress = false;
+  let incorrectAnswersUsers = {};
+  let correctAnswerUser = '';
 
   io.use((socket, next) => {
     if (socket.handshake.query && socket.handshake.query.token) {
@@ -83,7 +85,10 @@ module.exports = (io) => {
         ({ formattedAnswers } = getAnswer());
 
         let timeDiff = new Date(question.unreadEndTime).getTime() - new Date();
-        io.to(user.room).emit('question', question);
+        io.to(user.room).emit('question', { ...question, questionNumber: questionNumber + 1 });
+        io.to(user.room).emit('buzzLockCtrl', {
+          buzzLock: false,
+        });
         questionNumber += 1;
 
         questionEndTime = new Date(question.unreadEndTime);
@@ -98,6 +103,10 @@ module.exports = (io) => {
             }
           }, 1);
         });
+        
+        io.to(user.room).emit('buzzLockCtrl', {
+          buzzLock: true,
+        });
 
         io.to(user.room).emit('message', {
           user: 'admin',
@@ -106,20 +115,50 @@ module.exports = (io) => {
           timestamp: new Date(),
         });
 
+        ({ tossup_question, formattedAnswers } = getQuestionInfo());
+        getAllConnectedUsers().forEach((user) => {
+          let status = 'unattempted';
+          let user_answer = null;
+          if (correctAnswerUser === user.username) {
+            user_answer = null;
+            status = 'correct';
+          } else if (incorrectAnswersUsers.hasOwnProperty(user.username)) {
+            user_answer = incorrectAnswersUsers[user.username];
+            status = 'incorrect';
+          }
+          io.to(user.socketId).emit('questionInfo', {
+            question: tossup_question,
+            answer: formattedAnswers,
+            status: status,
+            user_answer: user_answer,
+          });
+        });
+
+        for (let prop in incorrectAnswersUsers) {
+          delete incorrectAnswersUsers[prop];
+        }
+        correctAnswerUser = '';
+
         await new Promise((r) => setTimeout(r, 2000));
 
-        if (questionNumber >= 3) {
+        if (questionNumber >= 10) {
           io.to(user.room).emit('roundEnd', {
             startTime: new Date(new Date().getTime() + 20000),
           });
           questionNumber = 0;
+          fetchQuestionsFromDB();
+          await new Promise((r) => setTimeout(r, 20000));
+          io.to(user.room).emit('roundStart', {});
+          hostQuestion();
         } else {
           hostQuestion();
         }
       }
 
       if (serverInstance === socket.id) {
-        hostQuestion();
+        fetchQuestionsFromDB().then(() => {
+          hostQuestion();
+        });
       }
 
       let nulifyBuzz;
@@ -148,6 +187,7 @@ module.exports = (io) => {
             (format == 'Multiple Choice' && messageSample == Object.keys(answers[0])[0])
           ) {
             messageStatus = 'correct';
+            correctAnswerUser = user.username;
             questionEndTime = new Date();
             let { userStats, allUsersStats } = addPoints(user, 'tossup');
             socket.emit('userStats', {
@@ -159,6 +199,7 @@ module.exports = (io) => {
           } else {
             messageStatus = 'incorrect';
             questionEndTime = questionEndTime - (8000 - (new Date().getTime() - buzzStartTime.getTime()));
+            incorrectAnswersUsers[user.username] = `${messageSample}`;
           }
         } else if (inputMode === 'chat') {
           messageStatus = 'chat';

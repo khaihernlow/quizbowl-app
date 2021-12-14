@@ -5,9 +5,9 @@
   border-radius: 25px;
   width: 1096px;
   height: 90vh;
-  top: 50%; 
+  top: 50%;
   right: 50%;
-  transform: translate(50%,-50%);
+  transform: translate(50%, -50%);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   overflow-x: hidden;
@@ -15,14 +15,14 @@
 .roundSummary__closeSummary {
   position: sticky;
   width: fit-content;
-  background-color: #EAF2FF;
+  background-color: #eaf2ff;
   border: 1px solid var(--primary-blue);
   border-radius: 10px;
   padding: 10px;
   display: flex;
   align-items: center;
   gap: 5px;
-  bottom: 20px; 
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
@@ -44,7 +44,7 @@
   margin-bottom: 10px;
 }
 .roundSummary__header {
-  background: linear-gradient(180deg, #EAF2FF 62.14%, #F6F8FB 100%);
+  background: linear-gradient(180deg, #eaf2ff 62.14%, #f6f8fb 100%);
   border-radius: 25px 25px 0 0;
   padding: 30px 50px 60px 50px;
   display: flex;
@@ -67,17 +67,17 @@
 .roundSummary__header__left__summary__bar {
   width: 400px;
   height: 8px;
-  background-color: #EAF2FF;
+  background-color: #eaf2ff;
   border-radius: 50px;
   margin-top: 10px;
   display: grid;
-  grid-template-columns: 55% 20% 25%;
+  /* grid-template-columns: 55% 20% 25%; */
   gap: 2px;
 }
 .roundSummary__header__left__summary__bar__tooltip {
   position: relative;
   display: inline-block;
-} 
+}
 .roundSummary__header__left__summary__bar__tooltip .roundSummary__header__left__summary__bar__tooltiptext {
   position: absolute;
   text-align: center;
@@ -87,7 +87,7 @@
   top: 200%;
 }
 .roundSummary__header__left__summary__bar__tooltiptext::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -97,7 +97,7 @@
 }
 .roundSummary__header__left__summary__bar__correct {
   background-color: var(--green);
-  border-radius: 50px 0 0 50px; 
+  border-radius: 50px 0 0 50px;
 }
 .roundSummary__header__left__summary__bar__correct .roundSummary__header__left__summary__bar__tooltiptext {
   border: 1px solid var(--green);
@@ -201,7 +201,8 @@
 .roundSummary__questionsReview__question__text {
   margin-bottom: 10px;
 }
-.roundSummary__questionsReview__question__text, .roundSummary__questionsReview__question__answer {
+.roundSummary__questionsReview__question__text,
+.roundSummary__questionsReview__question__answer {
   font-size: 13px;
   color: var(--secondary-gray);
 }
@@ -212,5 +213,4 @@
 }
 .roundSummary__questionsReview__question__toolbar__validity {
   font-size: 22px;
-  color: var(--green);
 }
