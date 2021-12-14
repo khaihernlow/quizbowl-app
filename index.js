@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send({ response: 'Quizbowl localhost server is up and running.' }).status(200);
+  res.send({ response: 'Quizbowl Heroku server is up and running.' }).status(200);
 });
 app.use('/user', userRoutes);
 app.use('/room', roomRoutes);
