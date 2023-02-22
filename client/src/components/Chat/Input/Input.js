@@ -45,6 +45,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question, 
   useEffect(() => {
     buzzRequested = false;
     if (user.user == buzz.user) {
+      //setInputMode('buzz');
     }
   }, [buzz]);
 
@@ -107,7 +108,7 @@ const Input = ({ setMessage, sendMessage, message, requestBuzz, buzz, question, 
         value="buzz"
         checked={checked || inputMode === 'buzz'}
         onChange={() => {
-          setInputMode('buzz');
+          //setInputMode('buzz');
           setIsEnterReset(false);
           requestBuzz();
         }}

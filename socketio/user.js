@@ -6,13 +6,13 @@ let rankedUsers = [];
 
 const getAllConnectedUsers = () => {
   return users;
-}
+};
 
 const getAllRankedUsers = (callback) => {
-  User.find({ 'stats.sciencebowl.points': { $gt: 0 } }, 'username stats.sciencebowl.points -_id', (err, docs) => {
+  User.find({ 'stats.sciencebowl.points': { $gte: 0 } }, 'username stats.sciencebowl.points -_id', (err, docs) => {
     if (err) console.log(err);
     docs.sort((a, b) => b.stats.sciencebowl.points - a.stats.sciencebowl.points);
-    console.log(docs);
+    console.log('docs' + docs);
     rankedUsers = docs;
     callback(rankedUsers);
   });
@@ -77,6 +77,7 @@ const addPoints = (user, typeOfQuestion) => {
   users[parseInt(indexUsers)].saved = false;
 
   const indexRankedUsers = rankedUsers.findIndex((rankedUser) => rankedUser.username === user.username);
+  console.log('here' + rankedUsers);
   rankedUsers[indexRankedUsers].stats.sciencebowl.points += 4;
   rankedUsers.sort((a, b) => b.stats.sciencebowl.points - a.stats.sciencebowl.points);
 
